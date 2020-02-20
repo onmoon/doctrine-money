@@ -12,6 +12,7 @@
 
     <rule ref="Doctrine">
         <exclude name="SlevomatCodingStandard.PHP.RequireExplicitAssertion.RequiredExplicitAssertion" />
+        <exclude name="SlevomatCodingStandard.Commenting.UselessInheritDocComment.UselessInheritDocComment" />
     </rule>
 
     <file>src/</file>

@@ -6,8 +6,9 @@ namespace OnMoon\Money\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
-use OnMoon\Money\GaapMoney;
 use function array_merge;
+use function bcdiv;
+use function bcmul;
 
 class GaapMoneyType extends Type
 {
@@ -36,7 +37,7 @@ class GaapMoneyType extends Type
      */
     public function convertToPHPValue($value, AbstractPlatform $platform) : string
     {
-        return GaapMoney::toSubunits((string) $value);
+        return (string) bcmul((string) $value, '10000', 0);
     }
 
     /**
@@ -46,7 +47,7 @@ class GaapMoneyType extends Type
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform) : string
     {
-        return GaapMoney::fromSubunits((string) $value);
+        return (string) bcdiv((string) $value, '10000', 4);
     }
 
     public function getName() : string

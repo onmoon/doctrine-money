@@ -4,38 +4,22 @@ declare(strict_types=1);
 
 namespace OnMoon\Money\Tests\Exception;
 
-use OnMoon\Money\Currency;
 use OnMoon\Money\Exception\CannotCreateMoney;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
 class CannotCreateMoneyTest extends TestCase
 {
-    public function testBecauseCurrencyMustBeBTC() : void
+    public function testBecauseCurrencyNotAllowed() : void
     {
+        $name     = 'Money';
+        $amount   = '10.00';
         $currency = 'EUR';
 
-        $exception = CannotCreateMoney::becauseCurrencyMustBeBTC($currency);
+        $exception = CannotCreateMoney::becauseCurrencyNotAllowed($name, $amount, $currency);
 
         Assert::assertSame(
-            'Cannot create Bitcoin with currency: EUR. Only allowed currency code for Bitcoin is XBT.',
-            $exception->getMessage()
-        );
-    }
-
-    public function testBecauseCurrencyExceedsSubunitLimit() : void
-    {
-        $name            = 'Money';
-        $classSubUnits   = 2;
-        $bitcoin         = 'XBT';
-        $bitcoinSubunits = 8;
-
-        $bitcoinCurrency = Currency::create($bitcoin, $bitcoinSubunits);
-
-        $exception = CannotCreateMoney::becauseCurrencyExceedsSubunitLimit($name, $classSubUnits, $bitcoinCurrency);
-
-        Assert::assertSame(
-            'Cannot create Money with currency: XBT. The currency has more subunits: 8 then the maximum allowed: 2.',
+            'Invalid Money with amount: 10.00 and currency: EUR. Currency not allowed.',
             $exception->getMessage()
         );
     }
@@ -44,65 +28,69 @@ class CannotCreateMoneyTest extends TestCase
     {
         $name     = 'Money';
         $amount   = '10.000';
-        $subunits = 2;
+        $currency = 'EUR';
         $format   = '/^-?\d+\.\d{2}$/';
 
-        $exception = CannotCreateMoney::becauseAmountFormatIsInvalid($name, $amount, $subunits, $format);
+        $exception = CannotCreateMoney::becauseAmountFormatIsInvalid($name, $amount, $currency, $format);
 
         Assert::assertSame(
-            'Cannot create Money from amount: 10.000 - invalid amount format. The correct format is: /^-?\d+\.\d{2}$/.',
+            'Invalid Money with amount: 10.000 and currency: EUR. Invalid amount format. The correct format is: /^-?\d+\.\d{2}$/.',
             $exception->getMessage()
         );
     }
 
     public function testBecauseAmountMustBeGreaterThanZero() : void
     {
-        $name   = 'Money';
-        $amount = '0.00';
+        $name     = 'Money';
+        $amount   = '0.00';
+        $currency = 'EUR';
 
-        $exception = CannotCreateMoney::becauseAmountMustBeGreaterThanZero($name, $amount);
+        $exception = CannotCreateMoney::becauseAmountMustBeGreaterThanZero($name, $amount, $currency);
 
         Assert::assertSame(
-            'Cannot create Money from amount: 0.00 - amount must be greater than zero.',
+            'Invalid Money with amount: 0.00 and currency: EUR. Amount must be greater than zero.',
             $exception->getMessage()
         );
     }
 
     public function testBecauseAmountMustBeZeroOrGreater() : void
     {
-        $name   = 'Money';
-        $amount = '-0.01';
+        $name     = 'Money';
+        $amount   = '-0.01';
+        $currency = 'EUR';
 
-        $exception = CannotCreateMoney::becauseAmountMustBeZeroOrGreater($name, $amount);
+        $exception = CannotCreateMoney::becauseAmountMustBeZeroOrGreater($name, $amount, $currency);
 
         Assert::assertSame(
-            'Cannot create Money from amount: -0.01 - amount must be zero or greater.',
+            'Invalid Money with amount: -0.01 and currency: EUR. Amount must be zero or greater.',
             $exception->getMessage()
         );
     }
 
     public function testBecauseAmountMustBeZeroOrLess() : void
     {
-        $name   = 'Money';
-        $amount = '0.01';
+        $name     = 'Money';
+        $amount   = '0.01';
+        $currency = 'EUR';
 
-        $exception = CannotCreateMoney::becauseAmountMustBeZeroOrLess($name, $amount);
+        $exception = CannotCreateMoney::becauseAmountMustBeZeroOrLess($name, $amount, $currency);
 
         Assert::assertSame(
-            'Cannot create Money from amount: 0.01 - amount must be zero or less.',
+            'Invalid Money with amount: 0.01 and currency: EUR. Amount must be zero or less.',
             $exception->getMessage()
         );
     }
 
     public function testBecauseAmountMustBeLessThanZero() : void
     {
-        $name   = 'Money';
-        $amount = '0.00';
+        $name     = 'Money';
+        $amount   = '0.00';
+        $currency = 'EUR';
 
-        $exception = CannotCreateMoney::becauseAmountMustBeLessThanZero($name, $amount);
+        $exception = CannotCreateMoney::becauseAmountMustBeLessThanZero($name, $amount, $currency);
 
         Assert::assertSame(
-            'Cannot create Money from amount: 0.00 - amount must be less than zero.',
+            'Invalid Money with amount: 0.00 and currency: EUR. Amount must be less than zero.',
             $exception->getMessage()
         );
     }

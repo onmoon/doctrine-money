@@ -14,22 +14,19 @@ class CurrencyTest extends TestCase
 {
     public function testCreateBaseClass() : void
     {
-        $code     = 'EUR';
-        $subunits = 2;
+        $code = 'EUR';
 
-        $currency = Currency::create($code, $subunits);
+        $currency = Currency::create($code);
 
         Assert::assertInstanceOf(Currency::class, $currency);
         Assert::assertSame($code, $currency->getCode());
-        Assert::assertSame($subunits, $currency->getSubUnits());
     }
 
     public function testCreateExtendedClass() : void
     {
-        $code     = 'EUR';
-        $subunits = 2;
+        $code = 'EUR';
 
-        $currency = ExtendedCurrency::create($code, $subunits);
+        $currency = ExtendedCurrency::create($code);
 
         Assert::assertInstanceOf(ExtendedCurrency::class, $currency);
     }
@@ -39,11 +36,10 @@ class CurrencyTest extends TestCase
         $firstCurrencyCode  = 'EUR';
         $secondCurrencyCode = 'EUR';
         $thirdCurrencyCode  = 'USD';
-        $subunits           = 2;
 
-        $firstCurrency  = Currency::create($firstCurrencyCode, $subunits);
-        $secondCurrency = Currency::create($secondCurrencyCode, $subunits);
-        $thirdCurrency  = Currency::create($thirdCurrencyCode, $subunits);
+        $firstCurrency  = Currency::create($firstCurrencyCode);
+        $secondCurrency = Currency::create($secondCurrencyCode);
+        $thirdCurrency  = Currency::create($thirdCurrencyCode);
 
         Assert::assertTrue($firstCurrency->equals($secondCurrency));
         Assert::assertFalse($firstCurrency->equals($thirdCurrency));
@@ -53,12 +49,11 @@ class CurrencyTest extends TestCase
     {
         $firstCurrencyCode  = 'EUR';
         $secondCurrencyCode = 'USD';
-        $subunits           = 2;
 
-        $firstCurrency  = Currency::create($firstCurrencyCode, $subunits);
-        $secondCurrency = Currency::create($secondCurrencyCode, $subunits);
+        $firstCurrency  = Currency::create($firstCurrencyCode);
+        $secondCurrency = Currency::create($secondCurrencyCode);
 
-        $currencies = new CurrencyList([$firstCurrencyCode => $subunits]);
+        $currencies = new CurrencyList([$firstCurrencyCode => 2]);
 
         Assert::assertTrue($firstCurrency->isAvailableWithin($currencies));
         Assert::assertFalse($secondCurrency->isAvailableWithin($currencies));
@@ -66,20 +61,18 @@ class CurrencyTest extends TestCase
 
     public function testToString() : void
     {
-        $code     = 'EUR';
-        $subunits = 2;
+        $code = 'EUR';
 
-        $currency = Currency::create($code, $subunits);
+        $currency = Currency::create($code);
 
         Assert::assertSame($code, (string) $currency);
     }
 
     public function testJsonSerialize() : void
     {
-        $code     = 'EUR';
-        $subunits = 2;
+        $code = 'EUR';
 
-        $currency = Currency::create($code, $subunits);
+        $currency = Currency::create($code);
 
         Assert::assertSame($code, $currency->jsonSerialize());
     }

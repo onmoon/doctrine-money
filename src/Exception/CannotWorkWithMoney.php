@@ -8,6 +8,25 @@ use function Safe\sprintf;
 
 final class CannotWorkWithMoney extends MoneyLogicError
 {
+    public static function becauseCurrencyExceedsSubunitLimit(
+        string $class,
+        string $amount,
+        string $currency,
+        int $currencySubunits,
+        int $classSubunits
+    ) : self {
+        return new self(
+            sprintf(
+                'Cannot instantiate %s with amount: %s and currency: %s. The currency has more subunits: %s then the class allows: %s.',
+                $class,
+                $amount,
+                $currency,
+                $currencySubunits,
+                $classSubunits
+            )
+        );
+    }
+
     public static function becauseMoneyHasDifferentSubunit(
         string $method,
         string $class,

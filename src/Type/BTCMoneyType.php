@@ -6,8 +6,9 @@ namespace OnMoon\Money\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
-use OnMoon\Money\BTC;
 use function array_merge;
+use function bcdiv;
+use function bcmul;
 
 class BTCMoneyType extends Type
 {
@@ -36,7 +37,7 @@ class BTCMoneyType extends Type
      */
     public function convertToPHPValue($value, AbstractPlatform $platform) : string
     {
-        return BTC::toSubunits((string) $value);
+        return (string) bcmul((string) $value, '100000000', 0);
     }
 
     /**
@@ -46,7 +47,7 @@ class BTCMoneyType extends Type
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform) : string
     {
-        return BTC::fromSubunits((string) $value);
+        return (string) bcdiv((string) $value, '100000000', 8);
     }
 
     public function getName() : string

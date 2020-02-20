@@ -12,28 +12,19 @@ class Currency
     /** @var string */
     private $code;
 
-    /** @var int */
-    private $subunits;
-
-    final private function __construct(string $code, int $subunits)
+    final private function __construct(string $code)
     {
-        $this->code     = $code;
-        $this->subunits = $subunits;
+        $this->code = $code;
     }
 
-    final public static function create(string $code, int $subunits) : self
+    final public static function create(string $code) : self
     {
-        return new static($code, $subunits);
+        return new static($code);
     }
 
     final public function getCode() : string
     {
         return $this->getLibCurrency()->getCode();
-    }
-
-    final public function getSubUnits() : int
-    {
-        return $this->subunits;
     }
 
     final public function equals(self $other) : bool

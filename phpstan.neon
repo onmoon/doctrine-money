@@ -1,9 +1,5 @@
 parameters:
     checkMissingIterableValueType: false
-    ignoreErrors:
-        -
-            message: "#Parameter \\#1 \\$function of function call_user_func expects callable\\(\\): mixed, array\\(class-string<OnMoon\\\\Money\\\\BaseMoney>, \\'create\\'\\) given\\.#"
-            path: %currentWorkingDirectory%/src/Factory/MoneyFactory.php
 includes:
     - vendor/thecodingmachine/phpstan-safe-rule/phpstan-safe-rule.neon
     - vendor/roave/no-floaters/rules.neon

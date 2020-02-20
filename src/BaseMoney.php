@@ -5,17 +5,20 @@ declare(strict_types=1);
 namespace OnMoon\Money;
 
 use Money\Converter;
+use Money\Currencies;
 use Money\Currency as LibCurrency;
 use Money\Money as LibMoney;
-use OnMoon\Money\Exception\CannotConvertCurrency;
 use OnMoon\Money\Exception\CannotCreateMoney;
 use OnMoon\Money\Exception\CannotWorkWithMoney;
+use RuntimeException;
 use function array_map;
 use function bcdiv;
 use function bcmul;
 use function get_class;
 use function Safe\preg_match;
+use function Safe\substr;
 use function str_pad;
+use function strpos;
 use const STR_PAD_RIGHT;
 
 abstract class BaseMoney
@@ -25,25 +28,39 @@ abstract class BaseMoney
     /** @var string */
     private $amount;
 
-    /** @var Currency */
+    /** @var string */
     private $currency;
 
-    final private function __construct(string $amount, Currency $currency)
+    final private function __construct(string $amount, string $currency)
     {
-        if ($currency->getSubUnits() > static::subUnits()) {
-            throw CannotCreateMoney::becauseCurrencyExceedsSubunitLimit(
+        $libCurrency = new LibCurrency($currency);
+
+        if (! static::getAllowedCurrencies()->contains($libCurrency)) {
+            throw CannotCreateMoney::becauseCurrencyNotAllowed(
                 static::humanReadableName(),
-                static::subUnits(),
+                $amount,
                 $currency
             );
         }
 
-        if (! preg_match($this->getAmountFormatRegexp($currency->getSubUnits()), $amount)) {
+        $currencySubunits = static::getAllowedCurrencies()->subunitFor($libCurrency);
+
+        if ($currencySubunits > static::classSubunits()) {
+            throw CannotWorkWithMoney::becauseCurrencyExceedsSubunitLimit(
+                static::class,
+                $amount,
+                $currency,
+                $currencySubunits,
+                static::classSubunits()
+            );
+        }
+
+        if (! preg_match($this->getAmountFormatRegexp($currencySubunits), $amount)) {
             throw CannotCreateMoney::becauseAmountFormatIsInvalid(
                 static::humanReadableName(),
                 $amount,
-                $currency->getSubUnits(),
-                $this->getAmountFormatRegexp($currency->getSubUnits())
+                $currency,
+                $this->getAmountFormatRegexp($currencySubunits)
             );
         }
 
@@ -53,24 +70,40 @@ abstract class BaseMoney
 
     final public static function create(string $amount, Currency $currency) : self
     {
-        $money = new static($amount, $currency);
+        $money = new static($amount, $currency->getCode());
 
         $money::validate($money);
 
         if ($money::amountMustBeGreaterThanZero() && ! $money->isPositive()) {
-            throw CannotCreateMoney::becauseAmountMustBeGreaterThanZero(static::humanReadableName(), $amount);
+            throw CannotCreateMoney::becauseAmountMustBeGreaterThanZero(
+                static::humanReadableName(),
+                $amount,
+                $currency->getCode()
+            );
         }
 
         if ($money::amountMustBeZeroOrGreater() && $money->isNegative()) {
-            throw CannotCreateMoney::becauseAmountMustBeZeroOrGreater(static::humanReadableName(), $amount);
+            throw CannotCreateMoney::becauseAmountMustBeZeroOrGreater(
+                static::humanReadableName(),
+                $amount,
+                $currency->getCode()
+            );
         }
 
         if ($money::amountMustBeZeroOrLess() && $money->isPositive()) {
-            throw CannotCreateMoney::becauseAmountMustBeZeroOrLess(static::humanReadableName(), $amount);
+            throw CannotCreateMoney::becauseAmountMustBeZeroOrLess(
+                static::humanReadableName(),
+                $amount,
+                $currency->getCode()
+            );
         }
 
         if ($money::amountMustBeLessThanZero() && ! $money->isNegative()) {
-            throw CannotCreateMoney::becauseAmountMustBeLessThanZero(static::humanReadableName(), $amount);
+            throw CannotCreateMoney::becauseAmountMustBeLessThanZero(
+                static::humanReadableName(),
+                $amount,
+                $currency->getCode()
+            );
         }
 
         return $money;
@@ -80,38 +113,13 @@ abstract class BaseMoney
     {
         static::assertSameSubUnit($money, __FUNCTION__);
 
-        return static::create(
-            $money->getAmount(),
-            Currency::create(
-                $money->getCurrency()->getCode(),
-                $money->getCurrency()->getSubUnits()
-            )
-        );
-    }
-
-    final public static function fromSubunits(string $amount) : string
-    {
-        return (string) bcdiv($amount, str_pad('1', static::subUnits() + 1, '0', STR_PAD_RIGHT), static::subUnits());
-    }
-
-    final public static function toSubunits(string $amount) : string
-    {
-        return (string) bcmul($amount, str_pad('1', static::subUnits() + 1, '0', STR_PAD_RIGHT), 0);
+        return static::create($money->getAmount(), $money->getCurrency());
     }
 
     final public function convert(Converter $converter, Currency $toCurrency) : self
     {
-        if ($toCurrency->equals($this->getCurrency())) {
-            throw CannotConvertCurrency::becauseBothCurrenciesSame(
-                (string) $this,
-                (string) $this->currency,
-                (string) $toCurrency
-            );
-        }
-
         return self::createFromLibMoney(
-            $converter->convert($this->getLibMoney(), new LibCurrency((string) $toCurrency)),
-            $toCurrency
+            $converter->convert($this->getLibMoney(), new LibCurrency($toCurrency->getCode()))
         );
     }
 
@@ -167,12 +175,30 @@ abstract class BaseMoney
 
     final public function getAmount() : string
     {
-        return self::fromSubunits($this->amount);
+        return $this->formatAmount(static::fromSubunits($this->amount));
+    }
+
+    private function formatAmount(string $amount) : string
+    {
+        $currencySubunits = static::getAllowedCurrencies()->subunitFor(new LibCurrency($this->currency));
+        $dotPosition      = strpos($amount, '.');
+
+        if ($dotPosition === false) {
+            throw new RuntimeException('Invalid money amount format');
+        }
+
+        return substr(
+            $amount,
+            0,
+            $currencySubunits === 0 ?
+                $dotPosition + $currencySubunits :
+                $dotPosition + $currencySubunits + 1
+        );
     }
 
     final public function getCurrency() : Currency
     {
-        return $this->currency;
+        return Currency::create($this->currency);
     }
 
     final public function add(self ...$addends) : self
@@ -187,8 +213,7 @@ abstract class BaseMoney
                     },
                     $addends
                 )
-            ),
-            $this->currency
+            )
         );
     }
 
@@ -204,24 +229,21 @@ abstract class BaseMoney
                     },
                     $subtrahends
                 )
-            ),
-            $this->currency
+            )
         );
     }
 
     final public function multiply(string $multiplier, int $roundingMode = LibMoney::ROUND_UP) : self
     {
         return self::createFromLibMoney(
-            $this->getLibMoney()->multiply($multiplier, $roundingMode),
-            $this->currency
+            $this->getLibMoney()->multiply($multiplier, $roundingMode)
         );
     }
 
     final public function divide(string $divisor, int $roundingMode = LibMoney::ROUND_UP) : self
     {
         return self::createFromLibMoney(
-            $this->getLibMoney()->divide($divisor, $roundingMode),
-            $this->currency
+            $this->getLibMoney()->divide($divisor, $roundingMode)
         );
     }
 
@@ -230,8 +252,7 @@ abstract class BaseMoney
         static::assertSameSubUnit($divisor, __FUNCTION__);
 
         return self::createFromLibMoney(
-            $this->getLibMoney()->mod($divisor->getLibMoney()),
-            $this->currency
+            $this->getLibMoney()->mod($divisor->getLibMoney())
         );
     }
 
@@ -242,7 +263,7 @@ abstract class BaseMoney
     {
         return array_map(
             function (LibMoney $money) : self {
-                return $this->createFromLibMoney($money, $this->currency);
+                return $this->createFromLibMoney($money);
             },
             $this->getLibMoney()->allocate($ratios)
         );
@@ -255,7 +276,7 @@ abstract class BaseMoney
     {
         return array_map(
             function (LibMoney $money) : self {
-                return $this->createFromLibMoney($money, $this->currency);
+                return $this->createFromLibMoney($money);
             },
             $this->getLibMoney()->allocateTo($n)
         );
@@ -270,12 +291,12 @@ abstract class BaseMoney
 
     final public function absolute() : self
     {
-        return self::createFromLibMoney($this->getLibMoney()->absolute(), $this->currency);
+        return self::createFromLibMoney($this->getLibMoney()->absolute());
     }
 
     final public function negative() : self
     {
-        return self::createFromLibMoney($this->getLibMoney()->negative(), $this->currency);
+        return self::createFromLibMoney($this->getLibMoney()->negative());
     }
 
     final public function isZero() : bool
@@ -353,8 +374,7 @@ abstract class BaseMoney
                     },
                     $collection
                 )
-            ),
-            $first->getCurrency()
+            )
         );
     }
 
@@ -373,8 +393,7 @@ abstract class BaseMoney
                     },
                     $collection
                 )
-            ),
-            $first->getCurrency()
+            )
         );
     }
 
@@ -383,12 +402,14 @@ abstract class BaseMoney
         return $this->getAmount() . ' ' . (string) $this->getCurrency();
     }
 
-    abstract protected static function subUnits() : int;
-
-    protected static function humanReadableName() : string
+    public static function humanReadableName() : string
     {
         return self::HUMAN_READABLE_NAME;
     }
+
+    abstract protected static function classSubunits() : int;
+
+    abstract protected static function getAllowedCurrencies() : Currencies;
 
     protected static function amountMustBeZeroOrGreater() : bool
     {
@@ -417,28 +438,45 @@ abstract class BaseMoney
     {
     }
 
-    private function createFromLibMoney(LibMoney $money, Currency $currency) : self
+    private static function fromSubunits(string $amount) : string
+    {
+        return (string) bcdiv($amount, static::getSubunitMultiplier(), static::classSubunits());
+    }
+
+    private static function toSubunits(string $amount) : string
+    {
+        return (string) bcmul($amount, static::getSubunitMultiplier(), 0);
+    }
+
+    private function createFromLibMoney(LibMoney $money) : self
     {
         return self::create(
-            self::fromSubunits($money->getAmount()),
-            Currency::create($currency->getCode(), $currency->getSubUnits())
+            static::fromSubunits($money->getAmount()),
+            Currency::create($money->getCurrency()->getCode())
         );
     }
 
     private function getLibMoney() : LibMoney
     {
-        return new LibMoney($this->amount, new LibCurrency($this->currency->getCode()));
+        return new LibMoney($this->amount, new LibCurrency($this->currency));
+    }
+
+    private static function getSubunitMultiplier() : string
+    {
+        return static::classSubunits() > 0 ?
+            str_pad('1', static::classSubunits() + 1, '0', STR_PAD_RIGHT) :
+            '1';
     }
 
     private static function assertSameSubUnit(self $money, string $methodName) : void
     {
-        if ($money::subUnits() !== static::subUnits()) {
+        if ($money::classSubunits() !== static::classSubunits()) {
             throw CannotWorkWithMoney::becauseMoneyHasDifferentSubunit(
                 $methodName,
                 static::class,
                 get_class($money),
-                static::subUnits(),
-                $money::subUnits()
+                static::classSubunits(),
+                $money::classSubunits()
             );
         }
     }
