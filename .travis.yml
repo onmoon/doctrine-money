@@ -36,7 +36,7 @@ jobs:
       script: ./vendor/bin/security-checker security:check
 
     - stage: Code Style
-      php: 7.4
+      php: 7.3
       script:
         - composer show squizlabs/php_codesniffer
         - composer show doctrine/coding-standard
