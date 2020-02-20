@@ -27,7 +27,7 @@ jobs:
       php: 7.4
       script: ./vendor/bin/psalm
 
-    - stage: Stan
+    - stage: PHPStan
       php: 7.4
       script: ./vendor/bin/phpstan analyze src -l 8
 
