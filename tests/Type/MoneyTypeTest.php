@@ -75,6 +75,21 @@ class MoneyTypeTest extends TestCase
         Assert::assertSame($expectedPhpValue, $phpValue);
     }
 
+    public function testConvertToNullPHPValue() : void
+    {
+        $expectedPhpValue = null;
+
+        $type = Type::getType(MoneyType::TYPE_NAME);
+
+        $databaseValue = null;
+        /** @var AbstractPlatform&MockObject $platformMock */
+        $platformMock = $this->createMock(AbstractPlatform::class);
+
+        $phpValue = $type->convertToPHPValue($databaseValue, $platformMock);
+
+        Assert::assertSame($expectedPhpValue, $phpValue);
+    }
+
     public function testConvertToDatabaseValue() : void
     {
         $expectedDatabaseValue = '100.12';
@@ -82,6 +97,21 @@ class MoneyTypeTest extends TestCase
         $type = Type::getType(MoneyType::TYPE_NAME);
 
         $phpValue = '10012';
+        /** @var AbstractPlatform&MockObject $platformMock */
+        $platformMock = $this->createMock(AbstractPlatform::class);
+
+        $phpValue = $type->convertToDatabaseValue($phpValue, $platformMock);
+
+        Assert::assertSame($expectedDatabaseValue, $phpValue);
+    }
+
+    public function testConvertToNullDatabaseValue() : void
+    {
+        $expectedDatabaseValue = null;
+
+        $type = Type::getType(MoneyType::TYPE_NAME);
+
+        $phpValue = null;
         /** @var AbstractPlatform&MockObject $platformMock */
         $platformMock = $this->createMock(AbstractPlatform::class);
 

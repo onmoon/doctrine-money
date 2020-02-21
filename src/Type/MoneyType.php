@@ -35,9 +35,9 @@ class MoneyType extends Type
      *
      * phpcs:disable SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform) : string
+    public function convertToPHPValue($value, AbstractPlatform $platform) : ?string
     {
-        return (string) bcmul((string) $value, '100', 0);
+        return $value !== null ? (string) bcmul((string) $value, '100', 0) : null;
     }
 
     /**
@@ -45,9 +45,9 @@ class MoneyType extends Type
      *
      * phpcs:disable SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform) : string
+    public function convertToDatabaseValue($value, AbstractPlatform $platform) : ?string
     {
-        return (string) bcdiv((string) $value, '100', 2);
+        return $value !== null ? (string) bcdiv((string) $value, '100', 2) : null;
     }
 
     public function getName() : string
