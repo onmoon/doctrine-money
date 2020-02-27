@@ -68,6 +68,9 @@ abstract class BaseMoney
         $this->currency = $currency;
     }
 
+    /**
+     * @return static
+     */
     final public static function create(string $amount, Currency $currency) : self
     {
         $money = new static($amount, $currency->getCode());
