@@ -9,8 +9,7 @@ use Money\Currency as LibCurrency;
 
 class Currency
 {
-    /** @var string */
-    private $code;
+    private string $code;
 
     final private function __construct(string $code)
     {
