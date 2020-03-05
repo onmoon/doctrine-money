@@ -11,8 +11,7 @@ use Money\Currency as LibCurrency;
 
 class Money extends BaseMoney
 {
-    /** @var Currencies|null */
-    private static $currencies = null;
+    private static ?Currencies $currencies = null;
 
     protected static function classSubunits() : int
     {

@@ -25,11 +25,8 @@ abstract class BaseMoney
 {
     private const HUMAN_READABLE_NAME = 'Money';
 
-    /** @var string */
-    protected $amount;
-
-    /** @var string */
-    protected $currency;
+    protected string $amount;
+    protected string $currency;
 
     final private function __construct(string $amount, string $currency)
     {

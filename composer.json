@@ -18,7 +18,7 @@
         }
     ],
     "require": {
-        "php": "^7.2",
+        "php": "^7.4",
         "ext-bcmath": "*",
         "doctrine/dbal": "^2.10",
         "moneyphp/money": "^3.3",

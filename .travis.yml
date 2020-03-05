@@ -7,8 +7,6 @@ cache:
     - $HOME/.composer/cache
 
 php:
-  - 7.2
-  - 7.3
   - 7.4
   - nightly
 
@@ -36,7 +34,7 @@ jobs:
       script: ./vendor/bin/security-checker security:check
 
     - stage: Code Style
-      php: 7.3
+      php: 7.4
       script:
         - composer show squizlabs/php_codesniffer
         - composer show doctrine/coding-standard
