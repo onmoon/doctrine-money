@@ -12,7 +12,7 @@ final class CannotCreateMoney extends MoneyRuntimeError
         string $name,
         string $amount,
         string $currency
-    ) : self {
+    ): self {
         return new self(
             sprintf(
                 'Invalid %s with amount: %s and currency: %s. Currency not allowed.',
@@ -28,7 +28,7 @@ final class CannotCreateMoney extends MoneyRuntimeError
         string $amount,
         string $currency,
         string $format
-    ) : self {
+    ): self {
         return new self(
             sprintf(
                 'Invalid %s with amount: %s and currency: %s. Invalid amount format. The correct format is: %s.',
@@ -44,7 +44,7 @@ final class CannotCreateMoney extends MoneyRuntimeError
         string $name,
         string $amount,
         string $currency
-    ) : self {
+    ): self {
         return new self(
             sprintf(
                 'Invalid %s with amount: %s and currency: %s. Amount must be greater than zero.',
@@ -59,7 +59,7 @@ final class CannotCreateMoney extends MoneyRuntimeError
         string $name,
         string $amount,
         string $currency
-    ) : self {
+    ): self {
         return new self(
             sprintf(
                 'Invalid %s with amount: %s and currency: %s. Amount must be zero or greater.',
@@ -74,7 +74,7 @@ final class CannotCreateMoney extends MoneyRuntimeError
         string $name,
         string $amount,
         string $currency
-    ) : self {
+    ): self {
         return new self(
             sprintf(
                 'Invalid %s with amount: %s and currency: %s. Amount must be zero or less.',
@@ -89,7 +89,7 @@ final class CannotCreateMoney extends MoneyRuntimeError
         string $name,
         string $amount,
         string $currency
-    ) : self {
+    ): self {
         return new self(
             sprintf(
                 'Invalid %s with amount: %s and currency: %s. Amount must be less than zero.',

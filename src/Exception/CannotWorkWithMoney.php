@@ -14,7 +14,7 @@ final class CannotWorkWithMoney extends MoneyLogicError
         string $currency,
         int $currencySubunits,
         int $classSubunits
-    ) : self {
+    ): self {
         return new self(
             sprintf(
                 'Cannot instantiate %s with amount: %s and currency: %s. The currency has more subunits: %s then the class allows: %s.',
@@ -33,7 +33,7 @@ final class CannotWorkWithMoney extends MoneyLogicError
         string $otherClass,
         int $subunits,
         int $otherSubunits
-    ) : self {
+    ): self {
         return new self(
             sprintf(
                 'Cannot execute method: %s on Money object: %s with other Money object as argument: %s. The classes have different subunits: %s and %s.',

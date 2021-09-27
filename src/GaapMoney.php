@@ -9,12 +9,12 @@ use Money\Currencies\ISOCurrencies;
 
 class GaapMoney extends BaseMoney
 {
-    protected static function classSubunits() : int
+    protected static function classSubunits(): int
     {
         return 4;
     }
 
-    protected static function getAllowedCurrencies() : Currencies
+    protected static function getAllowedCurrencies(): Currencies
     {
         return new ISOCurrencies();
     }

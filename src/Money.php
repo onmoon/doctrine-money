@@ -7,18 +7,17 @@ namespace OnMoon\Money;
 use Money\Currencies;
 use Money\Currencies\CurrencyList;
 use Money\Currencies\ISOCurrencies;
-use Money\Currency as LibCurrency;
 
 class Money extends BaseMoney
 {
     private static ?Currencies $currencies = null;
 
-    protected static function classSubunits() : int
+    protected static function classSubunits(): int
     {
         return 2;
     }
 
-    protected static function getAllowedCurrencies() : Currencies
+    protected static function getAllowedCurrencies(): Currencies
     {
         if (self::$currencies !== null) {
             return self::$currencies;
@@ -27,12 +26,11 @@ class Money extends BaseMoney
         return self::initializeCurrencies();
     }
 
-    private static function initializeCurrencies() : Currencies
+    private static function initializeCurrencies(): Currencies
     {
         $isoCurrencies              = new ISOCurrencies();
         $twoOrLessSubUnitCurrencies = [];
 
-        /** @var LibCurrency $currency */
         foreach ($isoCurrencies->getIterator() as $currency) {
             $subUnit = $isoCurrencies->subunitFor($currency);
 
@@ -43,6 +41,7 @@ class Money extends BaseMoney
             $twoOrLessSubUnitCurrencies[$currency->getCode()] = $subUnit;
         }
 
+        /** @psalm-var array<non-empty-string, positive-int|0> $twoOrLessSubUnitCurrencies */
         $currencies = new CurrencyList($twoOrLessSubUnitCurrencies);
 
         self::$currencies = $currencies;
