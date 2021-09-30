@@ -1,7 +1,7 @@
 # OnMoon Money
 
 [![Latest Version](https://img.shields.io/github/v/release/onmoon/money)](https://github.com/onmoon/money/releases)
-[![Build](https://img.shields.io/travis/onmoon/money/master)](https://travis-ci.org/onmoon/money)
+[![Build](https://github.com/onmoon/money/actions/workflows/ci.yml/badge.svg)](https://github.com/onmoon/money/actions)
 [![License](https://img.shields.io/github/license/onmoon/money)](https://github.com/onmoon/money/blob/master/LICENSE)
 [![Email](https://img.shields.io/badge/email-pf@csgo.com-blue.svg?style=flat-square)](mailto:pf@csgo.com)
 
