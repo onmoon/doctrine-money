@@ -9,17 +9,17 @@ use Money\Currencies\BitcoinCurrencies;
 
 class Bitcoin extends BaseMoney
 {
-    public static function humanReadableName() : string
+    public static function humanReadableName(): string
     {
         return 'Bitcoin';
     }
 
-    protected static function classSubunits() : int
+    protected static function classSubunits(): int
     {
         return 8;
     }
 
-    protected static function getAllowedCurrencies() : Currencies
+    protected static function getAllowedCurrencies(): Currencies
     {
         return new BitcoinCurrencies();
     }

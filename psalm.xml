@@ -3,7 +3,6 @@
     totallyTyped="true"
     resolveFromConfigFile="true"
     useDocblockTypes="true"
-    requireVoidReturnType="true"
     allowPhpStormGenerics="true"
     ignoreInternalFunctionFalseReturn="false"
     ignoreInternalFunctionNullReturn="false"
@@ -35,7 +34,6 @@
         <MissingReturnType errorLevel="error"/>
         <MissingPropertyType errorLevel="error"/>
         <InvalidDocblock errorLevel="error"/>
-        <MisplacedRequiredParam errorLevel="error"/>
 
         <PropertyNotSetInConstructor errorLevel="suppress"/>
         <MissingConstructor errorLevel="error"/>
