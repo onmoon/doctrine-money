@@ -18,8 +18,8 @@ use function bcmul;
 use function Safe\preg_match;
 use function str_pad;
 use function strpos;
-
 use function substr;
+
 use const STR_PAD_RIGHT;
 
 abstract class BaseMoney
