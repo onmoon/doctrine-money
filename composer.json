@@ -21,7 +21,7 @@
         "php": "^8.0|^8.1",
         "ext-bcmath": "*",
         "doctrine/dbal": "^2|^3",
-        "moneyphp/money": "^4.0",
+        "moneyphp/money": "^4.0.3",
         "thecodingmachine/safe": "^1.3|^2"
     },
     "require-dev": {
