@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace OnMoon\Money\Exception;
 
-use function Safe\sprintf;
+use function sprintf;
 
 final class CannotWorkWithMoney extends MoneyLogicError
 {

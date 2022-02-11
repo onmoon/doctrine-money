@@ -16,9 +16,9 @@ use function array_map;
 use function bcdiv;
 use function bcmul;
 use function Safe\preg_match;
-use function Safe\substr;
 use function str_pad;
 use function strpos;
+use function substr;
 
 use const STR_PAD_RIGHT;
 
@@ -69,7 +69,7 @@ abstract class BaseMoney
             );
         }
 
-        $this->amount   = static::toSubunits($amount);
+        $this->amount   = self::toSubunits($amount);
         $this->currency = $currency;
     }
 
@@ -121,7 +121,7 @@ abstract class BaseMoney
 
     final public static function createFromMoney(self $money): self
     {
-        static::assertSameSubUnit($money, __FUNCTION__);
+        self::assertSameSubUnit($money, __FUNCTION__);
 
         return static::create($money->getAmount(), $money->getCurrency());
     }
@@ -143,42 +143,42 @@ abstract class BaseMoney
 
     final public function equals(self $other): bool
     {
-        static::assertSameSubUnit($other, __FUNCTION__);
+        self::assertSameSubUnit($other, __FUNCTION__);
 
         return $this->getLibMoney()->equals($other->getLibMoney());
     }
 
     final public function compare(self $other): int
     {
-        static::assertSameSubUnit($other, __FUNCTION__);
+        self::assertSameSubUnit($other, __FUNCTION__);
 
         return $this->getLibMoney()->compare($other->getLibMoney());
     }
 
     final public function greaterThan(self $other): bool
     {
-        static::assertSameSubUnit($other, __FUNCTION__);
+        self::assertSameSubUnit($other, __FUNCTION__);
 
         return $this->getLibMoney()->greaterThan($other->getLibMoney());
     }
 
     final public function greaterThanOrEqual(self $other): bool
     {
-        static::assertSameSubUnit($other, __FUNCTION__);
+        self::assertSameSubUnit($other, __FUNCTION__);
 
         return $this->getLibMoney()->greaterThanOrEqual($other->getLibMoney());
     }
 
     final public function lessThan(self $other): bool
     {
-        static::assertSameSubUnit($other, __FUNCTION__);
+        self::assertSameSubUnit($other, __FUNCTION__);
 
         return $this->getLibMoney()->lessThan($other->getLibMoney());
     }
 
     final public function lessThanOrEqual(self $other): bool
     {
-        static::assertSameSubUnit($other, __FUNCTION__);
+        self::assertSameSubUnit($other, __FUNCTION__);
 
         return $this->getLibMoney()->lessThanOrEqual($other->getLibMoney());
     }
@@ -188,7 +188,7 @@ abstract class BaseMoney
      */
     final public function getAmount(): string
     {
-        return $this->formatAmount(static::fromSubunits($this->amount));
+        return $this->formatAmount(self::fromSubunits($this->amount));
     }
 
     /**
@@ -226,7 +226,7 @@ abstract class BaseMoney
             $this->getLibMoney()->add(
                 ...array_map(
                     static function (self $addend): LibMoney {
-                        static::assertSameSubUnit($addend, 'add');
+                        self::assertSameSubUnit($addend, 'add');
 
                         return $addend->getLibMoney();
                     },
@@ -242,7 +242,7 @@ abstract class BaseMoney
             $this->getLibMoney()->subtract(
                 ...array_map(
                     static function (self $subtrahend): LibMoney {
-                        static::assertSameSubUnit($subtrahend, 'subtract');
+                        self::assertSameSubUnit($subtrahend, 'subtract');
 
                         return $subtrahend->getLibMoney();
                     },
@@ -276,7 +276,7 @@ abstract class BaseMoney
 
     final public function mod(self $divisor): self
     {
-        static::assertSameSubUnit($divisor, __FUNCTION__);
+        self::assertSameSubUnit($divisor, __FUNCTION__);
 
         return self::createFromLibMoney(
             $this->getLibMoney()->mod($divisor->getLibMoney())
@@ -316,7 +316,7 @@ abstract class BaseMoney
 
     final public function ratioOf(self $money): string
     {
-        static::assertSameSubUnit($money, __FUNCTION__);
+        self::assertSameSubUnit($money, __FUNCTION__);
 
         return $this->getLibMoney()->ratioOf($money->getLibMoney());
     }
@@ -484,7 +484,7 @@ abstract class BaseMoney
          *
          * @phpstan-ignore-next-line
          */
-        return bcdiv($amount, static::getSubunitMultiplier(), static::classSubunits());
+        return bcdiv($amount, self::getSubunitMultiplier(), static::classSubunits());
     }
 
     /**
@@ -494,13 +494,13 @@ abstract class BaseMoney
      */
     private static function toSubunits(string $amount): string
     {
-        return bcmul($amount, static::getSubunitMultiplier(), 0);
+        return bcmul($amount, self::getSubunitMultiplier(), 0);
     }
 
     private function createFromLibMoney(LibMoney $money): self
     {
         return self::create(
-            static::fromSubunits($money->getAmount()),
+            self::fromSubunits($money->getAmount()),
             Currency::create($money->getCurrency()->getCode())
         );
     }

@@ -1,246 +1,149 @@
-# https://help.github.com/en/categories/automating-your-workflow-with-github-actions
-name: CI
-
+name: "CI"
 on:
-  - pull_request
-  - push
-
-
+  pull_request:
+  push:
+    branches:
+      - "master"
 env:
-  PHP_EXTENSIONS: dom, mbstring, xml, bcmath
-  PHP_INI_VALUES: memory_limit=-1, assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
-
+  PHP_EXTENSIONS: "dom, mbstring, xml, bcmath"
+  PHP_INI_VALUES: "memory_limit=-1, assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On"
 jobs:
   unit:
-    name: Unit tests ${{matrix.php-versions}}
-
-    runs-on: ubuntu-latest
-
+    name: "Unit tests ${{matrix.php-version}}-${{matrix.operating-system}}-${{matrix.dependencies}}"
+    runs-on: ${{matrix.operating-system}}
     strategy:
-      fail-fast: false
       matrix:
-        operating-system: ['ubuntu-latest']
-        php-versions: ['8.0']
-        phpunit-versions: ['latest']
-        compiler:
-          - default
-
+        operating-system:
+          - "ubuntu-latest"
+          - "windows-latest"
+        php-version:
+          - "8.0"
+          - "8.1"
+        dependencies:
+          - "lowest"
+          - "highest"
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - name: "Checkout"
+        uses: "actions/checkout@v2"
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
         with:
-          php-version: ${{ matrix.php-versions }}
-          extensions: ${{ env.PHP_EXTENSIONS }}
-          ini-values: ${{ env.PHP_INI_VALUES }}
-          tools: composer:v2
-          coverage: none
-
-      - name: Determine composer cache directory
-        run: echo "COMPOSER_CACHE_DIR=$(composer config cache-dir)" >> $GITHUB_ENV
-
-      - name: Cache dependencies installed with composer
-        uses: actions/cache@v2
-        with:
-          path: ${{ env.COMPOSER_CACHE_DIR }}
-          key: php${{ matrix.php-versions }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: |
-            php${{ matrix.php-versions }}-composer-
-
-      - name: Update composer
-        run: composer self-update
-
-      - name: Update dependencies with composer
-        run: composer update --no-interaction --no-ansi --no-progress
-
-      - name: Execute tests
-        run: vendor/bin/phpunit
-
+          coverage: "none"
+          php-version: "${{matrix.php-version}}"
+          extensions: "${{env.PHP_EXTENSIONS}}"
+          ini-values: "${{env.PHP_INI_VALUES}}"
+          tools: "composer:v2"
+      - name: "Update composer"
+        run: "composer self-update"
+      - name: "Install lowest dependencies"
+        if: ${{ matrix.dependencies == 'lowest' }}
+        run: "composer update --prefer-lowest --no-interaction --no-progress --no-suggest"
+      - name: "Install highest dependencies"
+        if: ${{ matrix.dependencies == 'highest' }}
+        run: "composer update --no-interaction --no-progress --no-suggest"
+      - name: "Execute tests"
+        run: "vendor/bin/phpunit --fail-on-warning"
   psalm:
-    name: Psalm ${{matrix.php-versions}}
-
-    runs-on: ubuntu-latest
-
+    name: "Psalm"
+    runs-on: "ubuntu-latest"
     strategy:
-      fail-fast: false
       matrix:
-        operating-system: ['ubuntu-latest']
-        php-versions: ['8.0']
-        phpunit-versions: ['latest']
-        compiler:
-          - default
-
+        operating-system:
+          - "ubuntu-latest"
+        php-version:
+          - "8.1"
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - name: "Checkout"
+        uses: "actions/checkout@v2"
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
         with:
-          php-version: ${{ matrix.php-versions }}
-          extensions: ${{ env.PHP_EXTENSIONS }}
-          ini-values: ${{ env.PHP_INI_VALUES }}
-          tools: composer:v2
-          coverage: none
-
-      - name: Determine composer cache directory
-        run: echo "COMPOSER_CACHE_DIR=$(composer config cache-dir)" >> $GITHUB_ENV
-
-      - name: Cache dependencies installed with composer
-        uses: actions/cache@v2
-        with:
-          path: ${{ env.COMPOSER_CACHE_DIR }}
-          key: php${{ matrix.php-versions }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: |
-            php${{ matrix.php-versions }}-composer-
-
-      - name: Update composer
-        run: composer self-update
-
-      - name: Update dependencies with composer
-        run: composer update --no-interaction --no-ansi --no-progress
-
-      - name: Execute Psalm
-        run: vendor/bin/psalm
+          coverage: "none"
+          php-version: "${{matrix.php-version}}"
+          extensions: "${{env.PHP_EXTENSIONS}}"
+          ini-values: "${{env.PHP_INI_VALUES}}"
+          tools: "composer:v2"
+      - name: "Update composer"
+        run: "composer self-update"
+      - name: "Install highest dependencies"
+        run: "composer update --no-interaction --no-progress --no-suggest"
+      - name: "Execute Psalm"
+        run: "vendor/bin/psalm"
   stan:
-    name: PhpStan ${{matrix.php-versions}}
-
-    runs-on: ubuntu-latest
-
+    name: "PhpStan"
+    runs-on: "ubuntu-latest"
     strategy:
-      fail-fast: false
       matrix:
-        operating-system: ['ubuntu-latest']
-        php-versions: ['8.0']
-        phpunit-versions: ['latest']
-        compiler:
-          - default
-
+        operating-system:
+          - "ubuntu-latest"
+        php-version:
+          - "8.1"
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - name: "Checkout"
+        uses: "actions/checkout@v2"
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
         with:
-          php-version: ${{ matrix.php-versions }}
-          extensions: ${{ env.PHP_EXTENSIONS }}
-          ini-values: ${{ env.PHP_INI_VALUES }}
-          tools: composer:v2
-          coverage: none
-
-      - name: Determine composer cache directory
-        run: echo "COMPOSER_CACHE_DIR=$(composer config cache-dir)" >> $GITHUB_ENV
-
-      - name: Cache dependencies installed with composer
-        uses: actions/cache@v2
-        with:
-          path: ${{ env.COMPOSER_CACHE_DIR }}
-          key: php${{ matrix.php-versions }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: |
-            php${{ matrix.php-versions }}-composer-
-
-      - name: Update composer
-        run: composer self-update
-
-      - name: Update dependencies with composer
-        run: composer update --no-interaction --no-ansi --no-progress
-
-      - name: Execute PhpStan
-        run: composer stan
-
+          coverage: "none"
+          php-version: "${{matrix.php-version}}"
+          extensions: "${{env.PHP_EXTENSIONS}}"
+          ini-values: "${{env.PHP_INI_VALUES}}"
+          tools: "composer:v2"
+      - name: "Update composer"
+        run: "composer self-update"
+      - name: "Install highest dependencies"
+        run: "composer update --no-interaction --no-progress --no-suggest"
+      - name: "Execute PhpStan"
+        run: "composer stan"
   code-style:
-    name: Code style ${{matrix.php-versions}}
-
-    runs-on: ubuntu-latest
-
+    name: "Code style"
+    runs-on: "ubuntu-latest"
     strategy:
-      fail-fast: false
       matrix:
-        operating-system: ['ubuntu-latest']
-        php-versions: ['8.0']
-        phpunit-versions: ['latest']
-        compiler:
-          - default
-
+        operating-system:
+          - "ubuntu-latest"
+        php-version:
+          - "8.1"
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - name: "Checkout"
+        uses: "actions/checkout@v2"
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
         with:
-          php-version: ${{ matrix.php-versions }}
-          extensions: ${{ env.PHP_EXTENSIONS }}
-          ini-values: ${{ env.PHP_INI_VALUES }}
-          tools: composer:v2
-          coverage: none
-
-      - name: Determine composer cache directory
-        run: echo "COMPOSER_CACHE_DIR=$(composer config cache-dir)" >> $GITHUB_ENV
-
-      - name: Cache dependencies installed with composer
-        uses: actions/cache@v2
-        with:
-          path: ${{ env.COMPOSER_CACHE_DIR }}
-          key: php${{ matrix.php-versions }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: |
-            php${{ matrix.php-versions }}-composer-
-
-      - name: Update composer
-        run: composer self-update
-
-      - name: Update dependencies with composer
-        run: composer update --no-interaction --no-ansi --no-progress
-
-      - name: Execute PhpCs
-        run: composer cs
-
+          coverage: "none"
+          php-version: "${{matrix.php-version}}"
+          extensions: "${{env.PHP_EXTENSIONS}}"
+          ini-values: "${{env.PHP_INI_VALUES}}"
+          tools: "composer:v2"
+      - name: "Update composer"
+        run: "composer self-update"
+      - name: "Install highest dependencies"
+        run: "composer update --no-interaction --no-progress --no-suggest"
+      - name: "Execute PhpCs"
+        run: "composer cs"
   security:
-    name: Security check ${{matrix.php-versions}}
-
-    runs-on: ubuntu-latest
-
+    name: "Security check"
+    runs-on: "ubuntu-latest"
     strategy:
-      fail-fast: false
       matrix:
-        operating-system: ['ubuntu-latest']
-        php-versions: ['8.0']
-        phpunit-versions: ['latest']
-        compiler:
-          - default
-
+        operating-system:
+          - "ubuntu-latest"
+        php-version:
+          - "8.1"
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - name: "Checkout"
+        uses: "actions/checkout@v2"
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
         with:
-          php-version: ${{ matrix.php-versions }}
-          extensions: ${{ env.PHP_EXTENSIONS }}
-          ini-values: ${{ env.PHP_INI_VALUES }}
-          tools: composer:v2
-          coverage: none
-
-      - name: Determine composer cache directory
-        run: echo "COMPOSER_CACHE_DIR=$(composer config cache-dir)" >> $GITHUB_ENV
-
-      - name: Cache dependencies installed with composer
-        uses: actions/cache@v2
-        with:
-          path: ${{ env.COMPOSER_CACHE_DIR }}
-          key: php${{ matrix.php-versions }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: |
-            php${{ matrix.php-versions }}-composer-
-
-      - name: Update composer
-        run: composer self-update
-
-      - name: Update dependencies with composer
-        run: composer update --no-interaction --no-ansi --no-progress
-
-      - name: Execute security check
-        run: composer sec
+          coverage: "none"
+          php-version: "${{matrix.php-version}}"
+          extensions: "${{env.PHP_EXTENSIONS}}"
+          ini-values: "${{env.PHP_INI_VALUES}}"
+          tools: "composer:v2"
+      - name: "Update composer"
+        run: "composer self-update"
+      - name: "Install highest dependencies"
+        run: "composer update --no-interaction --no-progress --no-suggest"
+      - name: "Execute security check"
+        run: "composer sec"
