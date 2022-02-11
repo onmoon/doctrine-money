@@ -20,7 +20,7 @@
     "require": {
         "php": "~8.0",
         "ext-bcmath": "*",
-        "doctrine/dbal": "^2",
+        "doctrine/dbal": "^2|^3",
         "moneyphp/money": "^4.0",
         "thecodingmachine/safe": "^1.3"
     },
