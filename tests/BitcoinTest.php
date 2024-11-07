@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class BitcoinTest extends TestCase
 {
-    public function testCreate() : void
+    public function testCreate(): void
     {
         $amount = '154.12345678';
         $code   = 'XBT';
@@ -25,7 +25,7 @@ class BitcoinTest extends TestCase
         Assert::assertSame($code, $money->getCurrency()->getCode());
     }
 
-    public function testCreateWrongAmount() : void
+    public function testCreateWrongAmount(): void
     {
         $amount = '100.0000000';
         $code   = 'XBT';
@@ -38,7 +38,7 @@ class BitcoinTest extends TestCase
         $money = Bitcoin::create($amount, $currency);
     }
 
-    public function testCreateWrongCurrency() : void
+    public function testCreateWrongCurrency(): void
     {
         $amount = '100.00000000';
         $code   = 'EUR';

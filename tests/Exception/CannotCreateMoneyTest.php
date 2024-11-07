@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class CannotCreateMoneyTest extends TestCase
 {
-    public function testBecauseCurrencyNotAllowed() : void
+    public function testBecauseCurrencyNotAllowed(): void
     {
         $name     = 'Money';
         $amount   = '10.00';
@@ -20,11 +20,11 @@ class CannotCreateMoneyTest extends TestCase
 
         Assert::assertSame(
             'Invalid Money with amount: 10.00 and currency: EUR. Currency not allowed.',
-            $exception->getMessage()
+            $exception->getMessage(),
         );
     }
 
-    public function testBecauseAmountFormatIsInvalid() : void
+    public function testBecauseAmountFormatIsInvalid(): void
     {
         $name     = 'Money';
         $amount   = '10.000';
@@ -35,11 +35,11 @@ class CannotCreateMoneyTest extends TestCase
 
         Assert::assertSame(
             'Invalid Money with amount: 10.000 and currency: EUR. Invalid amount format. The correct format is: /^-?\d+\.\d{2}$/.',
-            $exception->getMessage()
+            $exception->getMessage(),
         );
     }
 
-    public function testBecauseAmountMustBeGreaterThanZero() : void
+    public function testBecauseAmountMustBeGreaterThanZero(): void
     {
         $name     = 'Money';
         $amount   = '0.00';
@@ -49,11 +49,11 @@ class CannotCreateMoneyTest extends TestCase
 
         Assert::assertSame(
             'Invalid Money with amount: 0.00 and currency: EUR. Amount must be greater than zero.',
-            $exception->getMessage()
+            $exception->getMessage(),
         );
     }
 
-    public function testBecauseAmountMustBeZeroOrGreater() : void
+    public function testBecauseAmountMustBeZeroOrGreater(): void
     {
         $name     = 'Money';
         $amount   = '-0.01';
@@ -63,11 +63,11 @@ class CannotCreateMoneyTest extends TestCase
 
         Assert::assertSame(
             'Invalid Money with amount: -0.01 and currency: EUR. Amount must be zero or greater.',
-            $exception->getMessage()
+            $exception->getMessage(),
         );
     }
 
-    public function testBecauseAmountMustBeZeroOrLess() : void
+    public function testBecauseAmountMustBeZeroOrLess(): void
     {
         $name     = 'Money';
         $amount   = '0.01';
@@ -77,11 +77,11 @@ class CannotCreateMoneyTest extends TestCase
 
         Assert::assertSame(
             'Invalid Money with amount: 0.01 and currency: EUR. Amount must be zero or less.',
-            $exception->getMessage()
+            $exception->getMessage(),
         );
     }
 
-    public function testBecauseAmountMustBeLessThanZero() : void
+    public function testBecauseAmountMustBeLessThanZero(): void
     {
         $name     = 'Money';
         $amount   = '0.00';
@@ -91,7 +91,7 @@ class CannotCreateMoneyTest extends TestCase
 
         Assert::assertSame(
             'Invalid Money with amount: 0.00 and currency: EUR. Amount must be less than zero.',
-            $exception->getMessage()
+            $exception->getMessage(),
         );
     }
 }

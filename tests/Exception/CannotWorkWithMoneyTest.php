@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class CannotWorkWithMoneyTest extends TestCase
 {
-    public function testBecauseCurrencyExceedsSubunitLimit() : void
+    public function testBecauseCurrencyExceedsSubunitLimit(): void
     {
         $name             = 'OnMoon\Money\Money';
         $amount           = '10.000';
@@ -23,16 +23,16 @@ class CannotWorkWithMoneyTest extends TestCase
             $amount,
             $currency,
             $currencySubunits,
-            $classSubunits
+            $classSubunits,
         );
 
         Assert::assertSame(
             'Cannot instantiate OnMoon\Money\Money with amount: 10.000 and currency: BHD. The currency has more subunits: 3 then the class allows: 2.',
-            $exception->getMessage()
+            $exception->getMessage(),
         );
     }
 
-    public function testBecauseBothCurrenciesSame() : void
+    public function testBecauseBothCurrenciesSame(): void
     {
         $method        = 'add';
         $class         = 'OnMoon\Money\Money';
@@ -45,12 +45,12 @@ class CannotWorkWithMoneyTest extends TestCase
             $class,
             $otherClass,
             $subunits,
-            $otherSubunits
+            $otherSubunits,
         );
 
         Assert::assertSame(
             'Cannot execute method: add on Money object: OnMoon\Money\Money with other Money object as argument: OnMoon\Money\GaapMoney. The classes have different subunits: 2 and 4.',
-            $exception->getMessage()
+            $exception->getMessage(),
         );
     }
 }

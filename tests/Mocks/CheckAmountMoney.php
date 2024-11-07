@@ -11,7 +11,7 @@ use OnMoon\Money\Money;
 
 class CheckAmountMoney extends Money
 {
-    protected static function validate(BaseMoney $money) : void
+    protected static function validate(BaseMoney $money): void
     {
         if ($money->lessThanOrEqual(Money::create('100.00', Currency::create('EUR')))) {
             return;

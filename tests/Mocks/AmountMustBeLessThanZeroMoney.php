@@ -8,7 +8,7 @@ use OnMoon\Money\Money;
 
 class AmountMustBeLessThanZeroMoney extends Money
 {
-    protected static function amountMustBeLessThanZero() : bool
+    protected static function amountMustBeLessThanZero(): bool
     {
         return true;
     }

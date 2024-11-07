@@ -8,7 +8,7 @@ use OnMoon\Money\Money;
 
 class ZeroSubunitMoney extends Money
 {
-    protected static function subUnits() : int
+    protected static function subUnits(): int
     {
         return 0;
     }

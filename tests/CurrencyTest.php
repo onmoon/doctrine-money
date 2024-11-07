@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class CurrencyTest extends TestCase
 {
-    public function testCreateBaseClass() : void
+    public function testCreateBaseClass(): void
     {
         $code = 'EUR';
 
@@ -22,7 +22,7 @@ class CurrencyTest extends TestCase
         Assert::assertSame($code, $currency->getCode());
     }
 
-    public function testCreateExtendedClass() : void
+    public function testCreateExtendedClass(): void
     {
         $code = 'EUR';
 
@@ -31,7 +31,7 @@ class CurrencyTest extends TestCase
         Assert::assertInstanceOf(ExtendedCurrency::class, $currency);
     }
 
-    public function testEquals() : void
+    public function testEquals(): void
     {
         $firstCurrencyCode  = 'EUR';
         $secondCurrencyCode = 'EUR';
@@ -45,7 +45,7 @@ class CurrencyTest extends TestCase
         Assert::assertFalse($firstCurrency->equals($thirdCurrency));
     }
 
-    public function testIsAvailableWithin() : void
+    public function testIsAvailableWithin(): void
     {
         $firstCurrencyCode  = 'EUR';
         $secondCurrencyCode = 'USD';
@@ -59,7 +59,7 @@ class CurrencyTest extends TestCase
         Assert::assertFalse($secondCurrency->isAvailableWithin($currencies));
     }
 
-    public function testToString() : void
+    public function testToString(): void
     {
         $code = 'EUR';
 
@@ -68,7 +68,7 @@ class CurrencyTest extends TestCase
         Assert::assertSame($code, (string) $currency);
     }
 
-    public function testJsonSerialize() : void
+    public function testJsonSerialize(): void
     {
         $code = 'EUR';
 

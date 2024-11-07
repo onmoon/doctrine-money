@@ -494,6 +494,7 @@ abstract class BaseMoney
 
     private function getLibMoney(): LibMoney
     {
+        /** @psalm-suppress TooManyArguments */
         return new LibMoney($this->amount, new LibCurrency($this->currency));
     }
 

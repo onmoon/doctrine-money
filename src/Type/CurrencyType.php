@@ -16,7 +16,7 @@ class CurrencyType extends Type
     /** @param mixed[] $column */
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
-        return $platform->getVarcharTypeDeclarationSQL(
+        return $platform->getStringTypeDeclarationSQL(
             array_merge($column, ['length' => 3]),
         );
     }
