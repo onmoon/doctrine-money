@@ -9,28 +9,18 @@ use Money\Currency as LibCurrency;
 
 class Currency
 {
-    /** @psalm-var non-empty-string */
-    private string $code;
-
-    /**
-     * @psalm-param  non-empty-string $code
-     */
-    final private function __construct(string $code)
+    /** @psalm-param  non-empty-string $code */
+    final private function __construct(private string $code)
     {
-        $this->code = $code;
     }
 
-    /**
-     * @psalm-param  non-empty-string $code
-     */
+    /** @psalm-param  non-empty-string $code */
     final public static function create(string $code): self
     {
         return new static($code);
     }
 
-    /**
-     * @psalm-return non-empty-string
-     */
+    /** @psalm-return non-empty-string */
     final public function getCode(): string
     {
         return $this->getLibCurrency()->getCode();

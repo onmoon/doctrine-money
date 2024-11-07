@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class CurrencyTypeTest extends TestCase
 {
-    public function testGetSQLDeclaration() : void
+    public function testGetSQLDeclaration(): void
     {
         $type = Type::getType(CurrencyType::TYPE_NAME);
 
@@ -21,14 +21,14 @@ class CurrencyTypeTest extends TestCase
         $platformMock = $this->createMock(AbstractPlatform::class);
         $platformMock
             ->expects($this->once())
-            ->method('getVarcharTypeDeclarationSQL')
+            ->method('getStringTypeDeclarationSQL')
             ->with(['length' => 3])
             ->willReturn('');
 
         $type->getSQLDeclaration([], $platformMock);
     }
 
-    public function testGetSQLDeclarationWithFieldDeclaration() : void
+    public function testGetSQLDeclarationWithFieldDeclaration(): void
     {
         $type = Type::getType(CurrencyType::TYPE_NAME);
 
@@ -36,12 +36,12 @@ class CurrencyTypeTest extends TestCase
         $platformMock = $this->createMock(AbstractPlatform::class);
         $platformMock
             ->expects($this->once())
-            ->method('getVarcharTypeDeclarationSQL')
+            ->method('getStringTypeDeclarationSQL')
             ->with(
                 [
                     'something' => 10,
                     'length' => 3,
-                ]
+                ],
             )
             ->willReturn('');
 
@@ -50,11 +50,11 @@ class CurrencyTypeTest extends TestCase
                 'something' => 10,
                 'length' => 2,
             ],
-            $platformMock
+            $platformMock,
         );
     }
 
-    public function testGetName() : void
+    public function testGetName(): void
     {
         $type = Type::getType(CurrencyType::TYPE_NAME);
 

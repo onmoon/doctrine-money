@@ -24,7 +24,7 @@ use PHPUnit\Framework\TestCase;
 
 class MoneyTest extends TestCase
 {
-    public function testCreate() : void
+    public function testCreate(): void
     {
         $amount = '100.00';
         $code   = 'EUR';
@@ -37,7 +37,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($code, $money->getCurrency()->getCode());
     }
 
-    public function testCreateExtendedClass() : void
+    public function testCreateExtendedClass(): void
     {
         $amount = '100.00';
         $code   = 'EUR';
@@ -50,7 +50,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($code, $money->getCurrency()->getCode());
     }
 
-    public function testCreateFromTrailingZeroAmount() : void
+    public function testCreateFromTrailingZeroAmount(): void
     {
         $amount       = '00.01';
         $outputAmount = '0.01';
@@ -62,7 +62,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($outputAmount, $money->getAmount());
     }
 
-    public function testCreateValidateSuccess() : void
+    public function testCreateValidateSuccess(): void
     {
         $amount = '100.00';
         $code   = 'EUR';
@@ -73,7 +73,7 @@ class MoneyTest extends TestCase
         Assert::assertInstanceOf(CheckAmountMoney::class, $money);
     }
 
-    public function testCreateValidateFailure() : void
+    public function testCreateValidateFailure(): void
     {
         $amount = '100.01';
         $code   = 'EUR';
@@ -86,7 +86,7 @@ class MoneyTest extends TestCase
         $money = CheckAmountMoney::create($amount, $currency);
     }
 
-    public function testCanCreateWithNegativeAmount() : void
+    public function testCanCreateWithNegativeAmount(): void
     {
         $amount = '-0.01';
         $code   = 'EUR';
@@ -99,7 +99,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($code, $money->getCurrency()->getCode());
     }
 
-    public function testCanCreateWithZeroAmount() : void
+    public function testCanCreateWithZeroAmount(): void
     {
         $amount = '0.00';
         $code   = 'EUR';
@@ -112,7 +112,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($code, $money->getCurrency()->getCode());
     }
 
-    public function testCanCreateWithPositiveAmount() : void
+    public function testCanCreateWithPositiveAmount(): void
     {
         $amount = '0.01';
         $code   = 'EUR';
@@ -125,7 +125,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($code, $money->getCurrency()->getCode());
     }
 
-    public function testCantCreateWithZeroAmountIfMustBeGreaterThanZeroApplyed() : void
+    public function testCantCreateWithZeroAmountIfMustBeGreaterThanZeroApplyed(): void
     {
         $amount = '0.00';
         $code   = 'EUR';
@@ -138,7 +138,7 @@ class MoneyTest extends TestCase
         $money = AmountMustBeGreaterThanZeroMoney::create($amount, $currency);
     }
 
-    public function testCantCreateWithNegativeAmountIfMustBeGreaterThanZeroApplyed() : void
+    public function testCantCreateWithNegativeAmountIfMustBeGreaterThanZeroApplyed(): void
     {
         $amount = '-0.01';
         $code   = 'EUR';
@@ -151,7 +151,7 @@ class MoneyTest extends TestCase
         $money = AmountMustBeGreaterThanZeroMoney::create($amount, $currency);
     }
 
-    public function testCanCreateWithPositiveAmountIfMustBeGreaterThanZeroApplyed() : void
+    public function testCanCreateWithPositiveAmountIfMustBeGreaterThanZeroApplyed(): void
     {
         $amount = '0.01';
         $code   = 'EUR';
@@ -163,7 +163,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($code, $money->getCurrency()->getCode());
     }
 
-    public function testCantCreateWithNegativeAmountIfMustBeZeroOrGreaterApplyed() : void
+    public function testCantCreateWithNegativeAmountIfMustBeZeroOrGreaterApplyed(): void
     {
         $amount = '-0.01';
         $code   = 'EUR';
@@ -176,7 +176,7 @@ class MoneyTest extends TestCase
         $money = AmountMustBeZeroOrGreaterMoney::create($amount, $currency);
     }
 
-    public function testCanCreateWithZeroAmountIfMustBeZeroOrGreaterApplyed() : void
+    public function testCanCreateWithZeroAmountIfMustBeZeroOrGreaterApplyed(): void
     {
         $amount = '0.00';
         $code   = 'EUR';
@@ -188,7 +188,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($code, $money->getCurrency()->getCode());
     }
 
-    public function testCanCreateWithPositiveAmountIfMustBeZeroOrGreaterApplyed() : void
+    public function testCanCreateWithPositiveAmountIfMustBeZeroOrGreaterApplyed(): void
     {
         $amount = '0.01';
         $code   = 'EUR';
@@ -200,7 +200,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($code, $money->getCurrency()->getCode());
     }
 
-    public function testCantCreateWithPositiveAmountIfMustBeZeroOrLessApplyed() : void
+    public function testCantCreateWithPositiveAmountIfMustBeZeroOrLessApplyed(): void
     {
         $amount = '0.01';
         $code   = 'EUR';
@@ -213,7 +213,7 @@ class MoneyTest extends TestCase
         $money = AmountMustBeZeroOrLessMoney::create($amount, $currency);
     }
 
-    public function testCanCreateWithZeroAmountIfMustBeZeroOrLessApplyed() : void
+    public function testCanCreateWithZeroAmountIfMustBeZeroOrLessApplyed(): void
     {
         $amount = '0.00';
         $code   = 'EUR';
@@ -225,7 +225,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($code, $money->getCurrency()->getCode());
     }
 
-    public function testCanCreateWithNegativeAmountIfMustBeZeroOrLessApplyed() : void
+    public function testCanCreateWithNegativeAmountIfMustBeZeroOrLessApplyed(): void
     {
         $amount = '-0.01';
         $code   = 'EUR';
@@ -237,7 +237,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($code, $money->getCurrency()->getCode());
     }
 
-    public function testCantCreateWithPositiveAmountIfMustBeLessThanZeroApplyed() : void
+    public function testCantCreateWithPositiveAmountIfMustBeLessThanZeroApplyed(): void
     {
         $amount = '0.01';
         $code   = 'EUR';
@@ -250,7 +250,7 @@ class MoneyTest extends TestCase
         $money = AmountMustBeLessThanZeroMoney::create($amount, $currency);
     }
 
-    public function testCantCreateWithZeroAmountIfMustBeLessThanZeroApplyed() : void
+    public function testCantCreateWithZeroAmountIfMustBeLessThanZeroApplyed(): void
     {
         $amount = '0.00';
         $code   = 'EUR';
@@ -263,7 +263,7 @@ class MoneyTest extends TestCase
         $money = AmountMustBeLessThanZeroMoney::create($amount, $currency);
     }
 
-    public function testCanCreateWithNegativeAmountIfMustBeLessThanZeroApplyed() : void
+    public function testCanCreateWithNegativeAmountIfMustBeLessThanZeroApplyed(): void
     {
         $amount = '-0.01';
         $code   = 'EUR';
@@ -275,7 +275,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($code, $money->getCurrency()->getCode());
     }
 
-    public function testCantCreateWithInvalidAmountFormat() : void
+    public function testCantCreateWithInvalidAmountFormat(): void
     {
         $amount = '10.000';
         $code   = 'EUR';
@@ -288,7 +288,7 @@ class MoneyTest extends TestCase
         $money = Money::create($amount, $currency);
     }
 
-    public function testCantCreateWithExceedingSubunitCurrency() : void
+    public function testCantCreateWithExceedingSubunitCurrency(): void
     {
         $amount = '10.000';
         $code   = 'OMR';
@@ -301,7 +301,7 @@ class MoneyTest extends TestCase
         $money = InvalidSubunitCurrencyMoney::create($amount, $currency);
     }
 
-    public function testCanCreateFromSameSubunitMoney() : void
+    public function testCanCreateFromSameSubunitMoney(): void
     {
         $amount = '10.00';
         $code   = 'EUR';
@@ -316,7 +316,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($code, $otherMoney->getCurrency()->getCode());
     }
 
-    public function testCantCreateFromOtherSubunitMoney() : void
+    public function testCantCreateFromOtherSubunitMoney(): void
     {
         $amount = '10.00';
         $code   = 'EUR';
@@ -330,7 +330,7 @@ class MoneyTest extends TestCase
         $otherMoney = GaapMoney::createFromMoney($money);
     }
 
-    public function testCanCreateZeroSubunitMoney() : void
+    public function testCanCreateZeroSubunitMoney(): void
     {
         $amount = '123';
         $code   = 'DJF';
@@ -341,7 +341,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($amount, $money->getAmount());
     }
 
-    public function testCreateZeroSubunitMoneyInvalidFormatError() : void
+    public function testCreateZeroSubunitMoneyInvalidFormatError(): void
     {
         $amount = '100.0';
         $code   = 'DJF';
@@ -354,7 +354,7 @@ class MoneyTest extends TestCase
         $money = ZeroSubunitMoney::create($amount, $currency);
     }
 
-    public function testIsSameCurrency() : void
+    public function testIsSameCurrency(): void
     {
         $amount     = '10.00';
         $firstCode  = 'EUR';
@@ -372,7 +372,7 @@ class MoneyTest extends TestCase
         Assert::assertFalse($firstMoney->isSameCurrency($thirdMoney));
     }
 
-    public function testEquals() : void
+    public function testEquals(): void
     {
         $ten    = '10.00';
         $five   = '5.00';
@@ -391,7 +391,7 @@ class MoneyTest extends TestCase
         Assert::assertFalse($tenEuros->equals($tenDollars));
     }
 
-    public function testCantCheckEqualityWithOtherSubunitMoney() : void
+    public function testCantCheckEqualityWithOtherSubunitMoney(): void
     {
         $ten  = '10.00';
         $euro = 'EUR';
@@ -406,7 +406,7 @@ class MoneyTest extends TestCase
         $tenEuros->equals($anotherTenEuros);
     }
 
-    public function testCompare() : void
+    public function testCompare(): void
     {
         $ten     = '10.00';
         $five    = '5.00';
@@ -424,7 +424,7 @@ class MoneyTest extends TestCase
         Assert::assertSame(-1, $tenEuros->compare($fifteenEuros));
     }
 
-    public function testCantCompareWithOtherCurrencyMoney() : void
+    public function testCantCompareWithOtherCurrencyMoney(): void
     {
         $ten    = '10.00';
         $euro   = 'EUR';
@@ -441,7 +441,7 @@ class MoneyTest extends TestCase
         $tenEuros->compare($tenDollars);
     }
 
-    public function testCantCompareWithOtherSubunitMoney() : void
+    public function testCantCompareWithOtherSubunitMoney(): void
     {
         $ten      = '10.00';
         $euro     = 'EUR';
@@ -457,7 +457,7 @@ class MoneyTest extends TestCase
         $tenEuros->compare($anotherTenEuros);
     }
 
-    public function testGreaterThan() : void
+    public function testGreaterThan(): void
     {
         $ten     = '10.00';
         $five    = '5.00';
@@ -475,7 +475,7 @@ class MoneyTest extends TestCase
         Assert::assertFalse($tenEuros->greaterThan($fifteenEuros));
     }
 
-    public function testCantCompareGreaterThanWithOtherSubunitMoney() : void
+    public function testCantCompareGreaterThanWithOtherSubunitMoney(): void
     {
         $ten  = '10.00';
         $euro = 'EUR';
@@ -490,7 +490,7 @@ class MoneyTest extends TestCase
         $tenEuros->greaterThan($anotherTenEuros);
     }
 
-    public function testGreaterThanOrEqual() : void
+    public function testGreaterThanOrEqual(): void
     {
         $ten     = '10.00';
         $five    = '5.00';
@@ -508,7 +508,7 @@ class MoneyTest extends TestCase
         Assert::assertFalse($tenEuros->greaterThanOrEqual($fifteenEuros));
     }
 
-    public function testCantCompareGreaterThanOrEqualWithOtherSubunitMoney() : void
+    public function testCantCompareGreaterThanOrEqualWithOtherSubunitMoney(): void
     {
         $ten  = '10.00';
         $euro = 'EUR';
@@ -523,7 +523,7 @@ class MoneyTest extends TestCase
         $tenEuros->greaterThanOrEqual($anotherTenEuros);
     }
 
-    public function testLessThan() : void
+    public function testLessThan(): void
     {
         $ten     = '10.00';
         $five    = '5.00';
@@ -541,7 +541,7 @@ class MoneyTest extends TestCase
         Assert::assertTrue($tenEuros->lessThan($fifteenEuros));
     }
 
-    public function testCantCompareLessThanWithOtherSubunitMoney() : void
+    public function testCantCompareLessThanWithOtherSubunitMoney(): void
     {
         $ten  = '10.00';
         $euro = 'EUR';
@@ -556,7 +556,7 @@ class MoneyTest extends TestCase
         $tenEuros->lessThan($anotherTenEuros);
     }
 
-    public function testLessThanOrEqual() : void
+    public function testLessThanOrEqual(): void
     {
         $ten     = '10.00';
         $five    = '5.00';
@@ -574,7 +574,7 @@ class MoneyTest extends TestCase
         Assert::assertTrue($tenEuros->lessThanOrEqual($fifteenEuros));
     }
 
-    public function testCantCompareLessThanOrEqualWithOtherSubunitMoney() : void
+    public function testCantCompareLessThanOrEqualWithOtherSubunitMoney(): void
     {
         $ten  = '10.00';
         $euro = 'EUR';
@@ -589,7 +589,7 @@ class MoneyTest extends TestCase
         $tenEuros->lessThanOrEqual($anotherTenEuros);
     }
 
-    public function testGetAmount() : void
+    public function testGetAmount(): void
     {
         $amount = '12.34';
         $code   = 'EUR';
@@ -600,7 +600,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($amount, $money->getAmount());
     }
 
-    public function testGetCurrency() : void
+    public function testGetCurrency(): void
     {
         $amount = '12.34';
         $code   = 'EUR';
@@ -611,7 +611,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($code, $money->getCurrency()->getCode());
     }
 
-    public function testAdd() : void
+    public function testAdd(): void
     {
         $ten         = '10.00';
         $minusFive   = '-5.00';
@@ -631,7 +631,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($euro, $fiveAndHalfEuros->getCurrency()->getCode());
     }
 
-    public function testAddExtendedClassReturnsBaseClass() : void
+    public function testAddExtendedClassReturnsBaseClass(): void
     {
         $ten  = '10.00';
         $half = '0.50';
@@ -646,7 +646,7 @@ class MoneyTest extends TestCase
         Assert::assertInstanceOf(Money::class, $tenAndHalfEuros);
     }
 
-    public function testCantAddOtherCurrencyMoney() : void
+    public function testCantAddOtherCurrencyMoney(): void
     {
         $ten    = '10.00';
         $euro   = 'EUR';
@@ -663,7 +663,7 @@ class MoneyTest extends TestCase
         $tenEuros->add($tenDollars);
     }
 
-    public function testCantAddOtherSubunitMoney() : void
+    public function testCantAddOtherSubunitMoney(): void
     {
         $ten  = '10.00';
         $euro = 'EUR';
@@ -678,7 +678,7 @@ class MoneyTest extends TestCase
         $tenEuros->add($anotherTenEuros);
     }
 
-    public function testSubtract() : void
+    public function testSubtract(): void
     {
         $ten             = '10.00';
         $minusFive       = '-5.00';
@@ -698,7 +698,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($euro, $fourteenAndHalfEuros->getCurrency()->getCode());
     }
 
-    public function testSubtractExtendedClassReturnsBaseClass() : void
+    public function testSubtractExtendedClassReturnsBaseClass(): void
     {
         $ten  = '10.00';
         $half = '0.50';
@@ -713,7 +713,7 @@ class MoneyTest extends TestCase
         Assert::assertInstanceOf(Money::class, $nineAndHalfEuros);
     }
 
-    public function testCantSubtractOtherCurrencyMoney() : void
+    public function testCantSubtractOtherCurrencyMoney(): void
     {
         $ten      = '10.00';
         $euro     = 'EUR';
@@ -731,7 +731,7 @@ class MoneyTest extends TestCase
         $tenEuros->subtract($tenDollars);
     }
 
-    public function testCantSubtractOtherSubunitMoney() : void
+    public function testCantSubtractOtherSubunitMoney(): void
     {
         $ten  = '10.00';
         $euro = 'EUR';
@@ -746,7 +746,7 @@ class MoneyTest extends TestCase
         $tenEuros->subtract($anotherTenEuros);
     }
 
-    public function testMultiply() : void
+    public function testMultiply(): void
     {
         $amount           = '3.33';
         $multiplier       = '2.22';
@@ -763,7 +763,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($euro, $multipliedMoney->getCurrency()->getCode());
     }
 
-    public function testMultiplyRoundingModeOtherThanDefault() : void
+    public function testMultiplyRoundingModeOtherThanDefault(): void
     {
         $amount           = '3.33';
         $multiplier       = '2.22';
@@ -778,7 +778,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($multipliedAmount, $multipliedMoney->getAmount());
     }
 
-    public function testMultiplyExtendedClassReturnsBaseClass() : void
+    public function testMultiplyExtendedClassReturnsBaseClass(): void
     {
         $amount     = '3.33';
         $multiplier = '2.22';
@@ -792,7 +792,7 @@ class MoneyTest extends TestCase
         Assert::assertInstanceOf(Money::class, $multipliedMoney);
     }
 
-    public function testDivide() : void
+    public function testDivide(): void
     {
         $amount        = '3.33';
         $divisor       = '1.55';
@@ -809,7 +809,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($euro, $dividedMoney->getCurrency()->getCode());
     }
 
-    public function testDivideRoundingModeOtherThanDefault() : void
+    public function testDivideRoundingModeOtherThanDefault(): void
     {
         $amount        = '3.33';
         $divisor       = '1.55';
@@ -826,7 +826,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($euro, $dividedMoney->getCurrency()->getCode());
     }
 
-    public function testDivideExtendedClassReturnsBaseClass() : void
+    public function testDivideExtendedClassReturnsBaseClass(): void
     {
         $amount  = '3.33';
         $divisor = '1.55';
@@ -840,7 +840,7 @@ class MoneyTest extends TestCase
         Assert::assertInstanceOf(Money::class, $dividedMoney);
     }
 
-    public function testMod() : void
+    public function testMod(): void
     {
         $amount          = '3.33';
         $divisorAmount   = '3.00';
@@ -858,7 +858,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($euro, $remainingMoney->getCurrency()->getCode());
     }
 
-    public function testModExtendedClassReturnsBaseClass() : void
+    public function testModExtendedClassReturnsBaseClass(): void
     {
         $amount        = '3.33';
         $divisorAmount = '3.00';
@@ -873,7 +873,7 @@ class MoneyTest extends TestCase
         Assert::assertInstanceOf(Money::class, $remainingMoney);
     }
 
-    public function testCantModOtherCurrencyMoney() : void
+    public function testCantModOtherCurrencyMoney(): void
     {
         $amount          = '3.33';
         $divisorAmount   = '3.00';
@@ -892,7 +892,7 @@ class MoneyTest extends TestCase
         $money->mod($divisorMoney);
     }
 
-    public function testCantModOtherSubunitMoney() : void
+    public function testCantModOtherSubunitMoney(): void
     {
         $amount          = '3.33';
         $divisorAmount   = '3.00';
@@ -909,7 +909,7 @@ class MoneyTest extends TestCase
         $money->mod($divisorMoney);
     }
 
-    public function testAllocate() : void
+    public function testAllocate(): void
     {
         $amount                = '0.05';
         $ratios                = ['70', '30'];
@@ -930,7 +930,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($euro, $secondAllocatedMoney->getCurrency()->getCode());
     }
 
-    public function testAllocateExtendedClassReturnsBaseClass() : void
+    public function testAllocateExtendedClassReturnsBaseClass(): void
     {
         $amount = '0.05';
         $ratios = ['70', '30'];
@@ -945,7 +945,7 @@ class MoneyTest extends TestCase
         Assert::assertInstanceOf(Money::class, $secondAllocatedMoney);
     }
 
-    public function testAllocateTo() : void
+    public function testAllocateTo(): void
     {
         $amount                = '8.00';
         $n                     = 3;
@@ -970,7 +970,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($euro, $thirdAllocatedMoney->getCurrency()->getCode());
     }
 
-    public function testAllocateToExtendedClassReturnsBaseClass() : void
+    public function testAllocateToExtendedClassReturnsBaseClass(): void
     {
         $amount = '8.00';
         $n      = 3;
@@ -986,7 +986,7 @@ class MoneyTest extends TestCase
         Assert::assertInstanceOf(Money::class, $thirdAllocatedMoney);
     }
 
-    public function testRatioOf() : void
+    public function testRatioOf(): void
     {
         $three         = '3.00';
         $six           = '6.00';
@@ -1002,7 +1002,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($expectedRatio, $ratio);
     }
 
-    public function testCantRatioOfOtherSubunitMoney() : void
+    public function testCantRatioOfOtherSubunitMoney(): void
     {
         $three = '3.00';
         $six   = '6.00';
@@ -1018,7 +1018,7 @@ class MoneyTest extends TestCase
         $threeEuros->ratioOf($sixEuros);
     }
 
-    public function testAbsolute() : void
+    public function testAbsolute(): void
     {
         $amount         = '-3.00';
         $absoluteAmount = '3.00';
@@ -1034,7 +1034,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($euro, $absoluteMoney->getCurrency()->getCode());
     }
 
-    public function testAbsoluteExtendedClassReturnsBaseClass() : void
+    public function testAbsoluteExtendedClassReturnsBaseClass(): void
     {
         $amount = '-3.00';
         $euro   = 'EUR';
@@ -1047,7 +1047,7 @@ class MoneyTest extends TestCase
         Assert::assertInstanceOf(Money::class, $absoluteMoney);
     }
 
-    public function testNegative() : void
+    public function testNegative(): void
     {
         $amount         = '3.00';
         $negativeAmount = '-3.00';
@@ -1063,7 +1063,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($euro, $negativeMoney->getCurrency()->getCode());
     }
 
-    public function testNegativeExtendedClassReturnsBaseClass() : void
+    public function testNegativeExtendedClassReturnsBaseClass(): void
     {
         $amount = '3.00';
         $euro   = 'EUR';
@@ -1076,7 +1076,7 @@ class MoneyTest extends TestCase
         Assert::assertInstanceOf(Money::class, $negativeMoney);
     }
 
-    public function testIsZero() : void
+    public function testIsZero(): void
     {
         $zeroAmount     = '0.00';
         $positiveAmount = '0.01';
@@ -1093,7 +1093,7 @@ class MoneyTest extends TestCase
         Assert::assertFalse($negativeAmountMoney->isZero());
     }
 
-    public function testIsPositive() : void
+    public function testIsPositive(): void
     {
         $zeroAmount     = '0.00';
         $positiveAmount = '0.01';
@@ -1110,7 +1110,7 @@ class MoneyTest extends TestCase
         Assert::assertFalse($negativeAmountMoney->isPositive());
     }
 
-    public function testIsNegative() : void
+    public function testIsNegative(): void
     {
         $zeroAmount     = '0.00';
         $positiveAmount = '0.01';
@@ -1127,7 +1127,7 @@ class MoneyTest extends TestCase
         Assert::assertTrue($negativeAmountMoney->isNegative());
     }
 
-    public function testJsonSerialize() : void
+    public function testJsonSerialize(): void
     {
         $amount             = '10.00';
         $euro               = 'EUR';
@@ -1142,7 +1142,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($expectedSerialized, $money->jsonSerialize());
     }
 
-    public function testMin() : void
+    public function testMin(): void
     {
         $ten     = '10.00';
         $fifteen = '15.00';
@@ -1155,7 +1155,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($tenEuros, Money::min($tenEuros, $fifteenEuros));
     }
 
-    public function testCantMinOtherCurrencyMoney() : void
+    public function testCantMinOtherCurrencyMoney(): void
     {
         $ten     = '10.00';
         $fifteen = '15.00';
@@ -1173,7 +1173,7 @@ class MoneyTest extends TestCase
         Money::min($tenEuros, $fifteenDollars);
     }
 
-    public function testCantMinOtherSubunitMoney() : void
+    public function testCantMinOtherSubunitMoney(): void
     {
         $ten     = '10.00';
         $fifteen = '15.00';
@@ -1189,7 +1189,7 @@ class MoneyTest extends TestCase
         Money::min($tenEuros, $fifteenEuros);
     }
 
-    public function testMax() : void
+    public function testMax(): void
     {
         $ten     = '10.00';
         $fifteen = '15.00';
@@ -1202,7 +1202,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($fifteenEuros, Money::max($tenEuros, $fifteenEuros));
     }
 
-    public function testCantMaxOtherCurrencyMoney() : void
+    public function testCantMaxOtherCurrencyMoney(): void
     {
         $ten     = '10.00';
         $fifteen = '15.00';
@@ -1220,7 +1220,7 @@ class MoneyTest extends TestCase
         Money::max($tenEuros, $fifteenDollars);
     }
 
-    public function testCantMaxOtherSubunitMoney() : void
+    public function testCantMaxOtherSubunitMoney(): void
     {
         $ten     = '10.00';
         $fifteen = '15.00';
@@ -1236,7 +1236,7 @@ class MoneyTest extends TestCase
         Money::max($tenEuros, $fifteenEuros);
     }
 
-    public function testSum() : void
+    public function testSum(): void
     {
         $ten        = '10.00';
         $fifteen    = '15.00';
@@ -1254,7 +1254,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($euro, $moneySum->getCurrency()->getCode());
     }
 
-    public function testCantSumOtherCurrencyMoney() : void
+    public function testCantSumOtherCurrencyMoney(): void
     {
         $ten     = '10.00';
         $fifteen = '15.00';
@@ -1272,7 +1272,7 @@ class MoneyTest extends TestCase
         Money::sum($tenEuros, $fifteenDollars);
     }
 
-    public function testCantSumOtherSubunitMoney() : void
+    public function testCantSumOtherSubunitMoney(): void
     {
         $ten     = '10.00';
         $fifteen = '15.00';
@@ -1288,7 +1288,7 @@ class MoneyTest extends TestCase
         Money::sum($tenEuros, $fifteenEuros);
     }
 
-    public function testAvg() : void
+    public function testAvg(): void
     {
         $ten     = '10.00';
         $twenty  = '20.00';
@@ -1306,7 +1306,7 @@ class MoneyTest extends TestCase
         Assert::assertSame($euro, $avgMoney->getCurrency()->getCode());
     }
 
-    public function testCantAvgOtherCurrencyMoney() : void
+    public function testCantAvgOtherCurrencyMoney(): void
     {
         $ten     = '10.00';
         $fifteen = '15.00';
@@ -1324,7 +1324,7 @@ class MoneyTest extends TestCase
         Money::avg($tenEuros, $fifteenDollars);
     }
 
-    public function testCantAvgOtherSubunitMoney() : void
+    public function testCantAvgOtherSubunitMoney(): void
     {
         $ten     = '10.00';
         $fifteen = '15.00';

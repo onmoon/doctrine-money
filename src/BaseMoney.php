@@ -29,14 +29,11 @@ abstract class BaseMoney
     /** @psalm-var numeric-string */
     protected string $amount;
 
-    /** @psalm-var non-empty-string */
-    protected string $currency;
-
     /**
      * @psalm-param  numeric-string $amount
      * @psalm-param  non-empty-string $currency
      */
-    final private function __construct(string $amount, string $currency)
+    final private function __construct(string $amount, protected string $currency)
     {
         $libCurrency = new LibCurrency($currency);
 
@@ -44,7 +41,7 @@ abstract class BaseMoney
             throw CannotCreateMoney::becauseCurrencyNotAllowed(
                 static::humanReadableName(),
                 $amount,
-                $currency
+                $currency,
             );
         }
 
@@ -56,7 +53,7 @@ abstract class BaseMoney
                 $amount,
                 $currency,
                 $currencySubunits,
-                static::classSubunits()
+                static::classSubunits(),
             );
         }
 
@@ -65,7 +62,7 @@ abstract class BaseMoney
                 static::humanReadableName(),
                 $amount,
                 $currency,
-                $this->getAmountFormatRegexp($currencySubunits)
+                $this->getAmountFormatRegexp($currencySubunits),
             );
         }
 
@@ -88,7 +85,7 @@ abstract class BaseMoney
             throw CannotCreateMoney::becauseAmountMustBeGreaterThanZero(
                 static::humanReadableName(),
                 $amount,
-                $currency->getCode()
+                $currency->getCode(),
             );
         }
 
@@ -96,7 +93,7 @@ abstract class BaseMoney
             throw CannotCreateMoney::becauseAmountMustBeZeroOrGreater(
                 static::humanReadableName(),
                 $amount,
-                $currency->getCode()
+                $currency->getCode(),
             );
         }
 
@@ -104,7 +101,7 @@ abstract class BaseMoney
             throw CannotCreateMoney::becauseAmountMustBeZeroOrLess(
                 static::humanReadableName(),
                 $amount,
-                $currency->getCode()
+                $currency->getCode(),
             );
         }
 
@@ -112,7 +109,7 @@ abstract class BaseMoney
             throw CannotCreateMoney::becauseAmountMustBeLessThanZero(
                 static::humanReadableName(),
                 $amount,
-                $currency->getCode()
+                $currency->getCode(),
             );
         }
 
@@ -129,7 +126,7 @@ abstract class BaseMoney
     final public function convert(Converter $converter, Currency $toCurrency): self
     {
         return self::createFromLibMoney(
-            $converter->convert($this->getLibMoney(), new LibCurrency($toCurrency->getCode()))
+            $converter->convert($this->getLibMoney(), new LibCurrency($toCurrency->getCode())),
         );
     }
 
@@ -183,17 +180,13 @@ abstract class BaseMoney
         return $this->getLibMoney()->lessThanOrEqual($other->getLibMoney());
     }
 
-    /**
-     * @psalm-return numeric-string
-     */
+    /** @psalm-return numeric-string */
     final public function getAmount(): string
     {
         return $this->formatAmount(self::fromSubunits($this->amount));
     }
 
-    /**
-     * @psalm-return  numeric-string
-     */
+    /** @psalm-return  numeric-string */
     private function formatAmount(string $amount): string
     {
         $currencySubunits = static::getAllowedCurrencies()->subunitFor(new LibCurrency($this->currency));
@@ -209,7 +202,7 @@ abstract class BaseMoney
             0,
             $currencySubunits === 0 ?
                 $dotPosition + $currencySubunits :
-                $dotPosition + $currencySubunits + 1
+                $dotPosition + $currencySubunits + 1,
         );
 
         return $formattedAmount;
@@ -230,9 +223,9 @@ abstract class BaseMoney
 
                         return $addend->getLibMoney();
                     },
-                    $addends
-                )
-            )
+                    $addends,
+                ),
+            ),
         );
     }
 
@@ -246,9 +239,9 @@ abstract class BaseMoney
 
                         return $subtrahend->getLibMoney();
                     },
-                    $subtrahends
-                )
-            )
+                    $subtrahends,
+                ),
+            ),
         );
     }
 
@@ -259,7 +252,7 @@ abstract class BaseMoney
     final public function multiply(int|string $multiplier, int $roundingMode = LibMoney::ROUND_UP): self
     {
         return self::createFromLibMoney(
-            $this->getLibMoney()->multiply($multiplier, $roundingMode)
+            $this->getLibMoney()->multiply($multiplier, $roundingMode),
         );
     }
 
@@ -270,7 +263,7 @@ abstract class BaseMoney
     final public function divide(int|string $divisor, int $roundingMode = LibMoney::ROUND_UP): self
     {
         return self::createFromLibMoney(
-            $this->getLibMoney()->divide($divisor, $roundingMode)
+            $this->getLibMoney()->divide($divisor, $roundingMode),
         );
     }
 
@@ -279,13 +272,11 @@ abstract class BaseMoney
         self::assertSameSubUnit($divisor, __FUNCTION__);
 
         return self::createFromLibMoney(
-            $this->getLibMoney()->mod($divisor->getLibMoney())
+            $this->getLibMoney()->mod($divisor->getLibMoney()),
         );
     }
 
-    /**
-     * @return self[]
-     */
+    /** @return self[] */
     final public function allocate(string ...$ratios): array
     {
         /** @psalm-var  non-empty-array<array-key, float> $ratios */
@@ -295,7 +286,7 @@ abstract class BaseMoney
             function (LibMoney $money): self {
                 return $this->createFromLibMoney($money);
             },
-            $this->getLibMoney()->allocate($ratios)
+            $this->getLibMoney()->allocate($ratios),
         );
     }
 
@@ -310,7 +301,7 @@ abstract class BaseMoney
             function (LibMoney $money): self {
                 return $this->createFromLibMoney($money);
             },
-            $this->getLibMoney()->allocateTo($n)
+            $this->getLibMoney()->allocateTo($n),
         );
     }
 
@@ -346,9 +337,7 @@ abstract class BaseMoney
         return $this->getLibMoney()->isNegative();
     }
 
-    /**
-     * @return string[]
-     */
+    /** @return string[] */
     final public function jsonSerialize(): array
     {
         return [
@@ -404,9 +393,9 @@ abstract class BaseMoney
 
                         return $money->getLibMoney();
                     },
-                    $collection
-                )
-            )
+                    $collection,
+                ),
+            ),
         );
     }
 
@@ -423,9 +412,9 @@ abstract class BaseMoney
 
                         return $money->getLibMoney();
                     },
-                    $collection
-                )
-            )
+                    $collection,
+                ),
+            ),
         );
     }
 
@@ -463,9 +452,7 @@ abstract class BaseMoney
         return false;
     }
 
-    /**
-     * @throws CannotCreateMoney
-     */
+    /** @throws CannotCreateMoney */
     protected static function validate(self $money): void
     {
     }
@@ -501,18 +488,17 @@ abstract class BaseMoney
     {
         return self::create(
             self::fromSubunits($money->getAmount()),
-            Currency::create($money->getCurrency()->getCode())
+            Currency::create($money->getCurrency()->getCode()),
         );
     }
 
     private function getLibMoney(): LibMoney
     {
+        /** @psalm-suppress TooManyArguments */
         return new LibMoney($this->amount, new LibCurrency($this->currency));
     }
 
-    /**
-     * @psalm-return numeric-string
-     */
+    /** @psalm-return numeric-string */
     private static function getSubunitMultiplier(): string
     {
         /** @psalm-var numeric-string $multiplier */
@@ -531,7 +517,7 @@ abstract class BaseMoney
                 static::class,
                 $money::class,
                 static::classSubunits(),
-                $money::classSubunits()
+                $money::classSubunits(),
             );
         }
     }

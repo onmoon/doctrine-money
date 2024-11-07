@@ -13,13 +13,11 @@ class CurrencyType extends Type
 {
     public const TYPE_NAME = 'currency';
 
-    /**
-     * @param mixed[] $column
-     */
+    /** @param mixed[] $column */
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
-        return $platform->getVarcharTypeDeclarationSQL(
-            array_merge($column, ['length' => 3])
+        return $platform->getStringTypeDeclarationSQL(
+            array_merge($column, ['length' => 3]),
         );
     }
 

@@ -13,7 +13,7 @@ final class CannotWorkWithMoney extends MoneyLogicError
         string $amount,
         string $currency,
         int $currencySubunits,
-        int $classSubunits
+        int $classSubunits,
     ): self {
         return new self(
             sprintf(
@@ -22,8 +22,8 @@ final class CannotWorkWithMoney extends MoneyLogicError
                 $amount,
                 $currency,
                 $currencySubunits,
-                $classSubunits
-            )
+                $classSubunits,
+            ),
         );
     }
 
@@ -32,7 +32,7 @@ final class CannotWorkWithMoney extends MoneyLogicError
         string $class,
         string $otherClass,
         int $subunits,
-        int $otherSubunits
+        int $otherSubunits,
     ): self {
         return new self(
             sprintf(
@@ -41,8 +41,8 @@ final class CannotWorkWithMoney extends MoneyLogicError
                 $class,
                 $otherClass,
                 $subunits,
-                $otherSubunits
-            )
+                $otherSubunits,
+            ),
         );
     }
 }

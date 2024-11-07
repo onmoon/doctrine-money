@@ -10,12 +10,12 @@ use OnMoon\Money\Money;
 
 class InvalidSubunitCurrencyMoney extends Money
 {
-    protected static function subUnits() : int
+    protected static function subUnits(): int
     {
         return 2;
     }
 
-    protected static function getAllowedCurrencies() : Currencies
+    protected static function getAllowedCurrencies(): Currencies
     {
         return new CurrencyList(['OMR' => 3]);
     }

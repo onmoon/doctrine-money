@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class GaapMoneyTypeTest extends TestCase
 {
-    public function testGetSQLDeclaration() : void
+    public function testGetSQLDeclaration(): void
     {
         $type = Type::getType(GaapMoneyType::TYPE_NAME);
 
@@ -26,14 +26,14 @@ class GaapMoneyTypeTest extends TestCase
                 [
                     'precision' => 15,
                     'scale' => 4,
-                ]
+                ],
             )
             ->willReturn('');
 
         $type->getSQLDeclaration([], $platformMock);
     }
 
-    public function testGetSQLDeclarationWithFieldDeclaration() : void
+    public function testGetSQLDeclarationWithFieldDeclaration(): void
     {
         $type = Type::getType(GaapMoneyType::TYPE_NAME);
 
@@ -47,7 +47,7 @@ class GaapMoneyTypeTest extends TestCase
                     'something' => 10,
                     'precision' => 15,
                     'scale' => 4,
-                ]
+                ],
             )
             ->willReturn('');
 
@@ -56,11 +56,11 @@ class GaapMoneyTypeTest extends TestCase
                 'something' => 10,
                 'scale' => 2,
             ],
-            $platformMock
+            $platformMock,
         );
     }
 
-    public function testConvertToPHPValue() : void
+    public function testConvertToPHPValue(): void
     {
         $expectedPhpValue = '1001234';
 
@@ -75,7 +75,7 @@ class GaapMoneyTypeTest extends TestCase
         Assert::assertSame($expectedPhpValue, $phpValue);
     }
 
-    public function testConvertToNullPHPValue() : void
+    public function testConvertToNullPHPValue(): void
     {
         $expectedPhpValue = null;
 
@@ -90,7 +90,7 @@ class GaapMoneyTypeTest extends TestCase
         Assert::assertSame($expectedPhpValue, $phpValue);
     }
 
-    public function testConvertToDatabaseValue() : void
+    public function testConvertToDatabaseValue(): void
     {
         $expectedDatabaseValue = '100.1234';
 
@@ -105,7 +105,7 @@ class GaapMoneyTypeTest extends TestCase
         Assert::assertSame($expectedDatabaseValue, $phpValue);
     }
 
-    public function testConvertToNullDatabaseValue() : void
+    public function testConvertToNullDatabaseValue(): void
     {
         $expectedDatabaseValue = null;
 
@@ -120,7 +120,7 @@ class GaapMoneyTypeTest extends TestCase
         Assert::assertSame($expectedDatabaseValue, $phpValue);
     }
 
-    public function testGetName() : void
+    public function testGetName(): void
     {
         $type = Type::getType(GaapMoneyType::TYPE_NAME);
 

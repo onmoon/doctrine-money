@@ -11,15 +11,15 @@ final class CannotCreateMoney extends MoneyRuntimeError
     public static function becauseCurrencyNotAllowed(
         string $name,
         string $amount,
-        string $currency
+        string $currency,
     ): self {
         return new self(
             sprintf(
                 'Invalid %s with amount: %s and currency: %s. Currency not allowed.',
                 $name,
                 $amount,
-                $currency
-            )
+                $currency,
+            ),
         );
     }
 
@@ -27,7 +27,7 @@ final class CannotCreateMoney extends MoneyRuntimeError
         string $name,
         string $amount,
         string $currency,
-        string $format
+        string $format,
     ): self {
         return new self(
             sprintf(
@@ -35,68 +35,68 @@ final class CannotCreateMoney extends MoneyRuntimeError
                 $name,
                 $amount,
                 $currency,
-                $format
-            )
+                $format,
+            ),
         );
     }
 
     public static function becauseAmountMustBeGreaterThanZero(
         string $name,
         string $amount,
-        string $currency
+        string $currency,
     ): self {
         return new self(
             sprintf(
                 'Invalid %s with amount: %s and currency: %s. Amount must be greater than zero.',
                 $name,
                 $amount,
-                $currency
-            )
+                $currency,
+            ),
         );
     }
 
     public static function becauseAmountMustBeZeroOrGreater(
         string $name,
         string $amount,
-        string $currency
+        string $currency,
     ): self {
         return new self(
             sprintf(
                 'Invalid %s with amount: %s and currency: %s. Amount must be zero or greater.',
                 $name,
                 $amount,
-                $currency
-            )
+                $currency,
+            ),
         );
     }
 
     public static function becauseAmountMustBeZeroOrLess(
         string $name,
         string $amount,
-        string $currency
+        string $currency,
     ): self {
         return new self(
             sprintf(
                 'Invalid %s with amount: %s and currency: %s. Amount must be zero or less.',
                 $name,
                 $amount,
-                $currency
-            )
+                $currency,
+            ),
         );
     }
 
     public static function becauseAmountMustBeLessThanZero(
         string $name,
         string $amount,
-        string $currency
+        string $currency,
     ): self {
         return new self(
             sprintf(
                 'Invalid %s with amount: %s and currency: %s. Amount must be less than zero.',
                 $name,
                 $amount,
-                $currency
-            )
+                $currency,
+            ),
         );
     }
 }

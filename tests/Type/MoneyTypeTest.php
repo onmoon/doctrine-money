@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class MoneyTypeTest extends TestCase
 {
-    public function testGetSQLDeclaration() : void
+    public function testGetSQLDeclaration(): void
     {
         $type = Type::getType(MoneyType::TYPE_NAME);
 
@@ -26,14 +26,14 @@ class MoneyTypeTest extends TestCase
                 [
                     'precision' => 10,
                     'scale' => 2,
-                ]
+                ],
             )
             ->willReturn('');
 
         $type->getSQLDeclaration([], $platformMock);
     }
 
-    public function testGetSQLDeclarationWithFieldDeclaration() : void
+    public function testGetSQLDeclarationWithFieldDeclaration(): void
     {
         $type = Type::getType(MoneyType::TYPE_NAME);
 
@@ -47,7 +47,7 @@ class MoneyTypeTest extends TestCase
                     'something' => 11,
                     'precision' => 10,
                     'scale' => 2,
-                ]
+                ],
             )
             ->willReturn('');
 
@@ -56,11 +56,11 @@ class MoneyTypeTest extends TestCase
                 'something' => 11,
                 'scale' => 1,
             ],
-            $platformMock
+            $platformMock,
         );
     }
 
-    public function testConvertToPHPValue() : void
+    public function testConvertToPHPValue(): void
     {
         $expectedPhpValue = '10012';
 
@@ -75,7 +75,7 @@ class MoneyTypeTest extends TestCase
         Assert::assertSame($expectedPhpValue, $phpValue);
     }
 
-    public function testConvertToNullPHPValue() : void
+    public function testConvertToNullPHPValue(): void
     {
         $expectedPhpValue = null;
 
@@ -90,7 +90,7 @@ class MoneyTypeTest extends TestCase
         Assert::assertSame($expectedPhpValue, $phpValue);
     }
 
-    public function testConvertToDatabaseValue() : void
+    public function testConvertToDatabaseValue(): void
     {
         $expectedDatabaseValue = '100.12';
 
@@ -105,7 +105,7 @@ class MoneyTypeTest extends TestCase
         Assert::assertSame($expectedDatabaseValue, $phpValue);
     }
 
-    public function testConvertToNullDatabaseValue() : void
+    public function testConvertToNullDatabaseValue(): void
     {
         $expectedDatabaseValue = null;
 
@@ -120,7 +120,7 @@ class MoneyTypeTest extends TestCase
         Assert::assertSame($expectedDatabaseValue, $phpValue);
     }
 
-    public function testGetName() : void
+    public function testGetName(): void
     {
         $type = Type::getType(MoneyType::TYPE_NAME);
 

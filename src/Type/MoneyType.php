@@ -15,9 +15,7 @@ class MoneyType extends Type
 {
     public const TYPE_NAME = 'money';
 
-    /**
-     * @param mixed[] $column
-     */
+    /** @param mixed[] $column */
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         return $platform->getDecimalTypeDeclarationSQL(
@@ -26,16 +24,12 @@ class MoneyType extends Type
                 [
                     'precision' => 10,
                     'scale' => 2,
-                ]
-            )
+                ],
+            ),
         );
     }
 
-    /**
-     *
-     * phpcs:disable SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     */
-    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?string
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): string|null
     {
         if ($value === null) {
             return null;
@@ -47,11 +41,7 @@ class MoneyType extends Type
         return bcmul($value, '100', 0);
     }
 
-    /**
-     *
-     * phpcs:disable SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     */
-    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): string|null
     {
         if ($value === null) {
             return null;

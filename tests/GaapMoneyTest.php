@@ -12,10 +12,8 @@ use PHPUnit\Framework\TestCase;
 
 class GaapMoneyTest extends TestCase
 {
-    /**
-     * @dataProvider moneyProvider
-     */
-    public function testCreate(string $amount, string $code) : void
+    /** @dataProvider moneyProvider */
+    public function testCreate(string $amount, string $code): void
     {
         $currency = Currency::create($code);
         $money    = GaapMoney::create($amount, $currency);
@@ -25,7 +23,7 @@ class GaapMoneyTest extends TestCase
         Assert::assertSame($code, $money->getCurrency()->getCode());
     }
 
-    public function testCreateInvalidCurrency() : void
+    public function testCreateInvalidCurrency(): void
     {
         $amount   = '10.00000000';
         $currency = 'XBT';
@@ -38,10 +36,8 @@ class GaapMoneyTest extends TestCase
         $money = GaapMoney::create($amount, $currency);
     }
 
-    /**
-     * @return mixed[][]
-     */
-    public function moneyProvider() : array
+    /** @return mixed[][] */
+    public static function moneyProvider(): array
     {
         return [
             ['100', 'CLP'],

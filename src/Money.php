@@ -10,7 +10,7 @@ use Money\Currencies\ISOCurrencies;
 
 class Money extends BaseMoney
 {
-    private static ?Currencies $currencies = null;
+    private static Currencies|null $currencies = null;
 
     protected static function classSubunits(): int
     {
