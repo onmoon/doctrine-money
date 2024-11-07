@@ -15,9 +15,7 @@ class BTCMoneyType extends Type
 {
     public const TYPE_NAME = 'btc_money';
 
-    /**
-     * @param mixed[] $column
-     */
+    /** @param mixed[] $column */
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         return $platform->getDecimalTypeDeclarationSQL(
@@ -26,16 +24,12 @@ class BTCMoneyType extends Type
                 [
                     'precision' => 16,
                     'scale' => 8,
-                ]
-            )
+                ],
+            ),
         );
     }
 
-    /**
-     *
-     * phpcs:disable SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     */
-    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?string
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): string|null
     {
         if ($value === null) {
             return null;
@@ -47,11 +41,7 @@ class BTCMoneyType extends Type
         return bcmul($value, '100000000', 0);
     }
 
-    /**
-     *
-     * phpcs:disable SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-     */
-    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
+    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): string|null
     {
         if ($value === null) {
             return null;
